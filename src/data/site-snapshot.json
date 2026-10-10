@@ -1,0 +1,408 @@
+{
+  "generatedAt": "2026-10-10T12:05:15.257Z",
+  "settings": {
+    "siteEnabled": true,
+    "maintenanceMessage": "This site is being updated. Please check back soon.",
+    "siteTitle": "Gopi — Full-Stack Developer",
+    "metaDescription": "",
+    "showHeader": true,
+    "showHeaderCta": true,
+    "headerCtaLabel": "Let's talk",
+    "enableThemeToggle": true,
+    "defaultTheme": "system",
+    "accentLight": "#a87a32",
+    "accentDark": "#d9b26a",
+    "fontSans": "Geist",
+    "fontSerif": "Instrument Serif",
+    "baseFontSize": 16,
+    "headingScale": 100,
+    "showStats": true,
+    "showMarquee": true,
+    "showResumeButton": true,
+    "showContactForm": true,
+    "showFooter": true,
+    "showWhatsappButton": true,
+    "enableAnimations": true
+  },
+  "profile": {
+    "name": "Gopi",
+    "role": "MERN / Full-Stack Developer",
+    "location": "Salem, Tamil Nadu, India",
+    "avatarUrl": "http://localhost:4000/uploads/37879e3a-7638-4813-be7c-b0b175ac9d3f.png",
+    "resumeUrl": "http://localhost:4000/uploads/38d77bef-786f-410b-b6e3-4173172835dd.pdf",
+    "available": true,
+    "availabilityText": "Available for new projects",
+    "heroTitle": "Hi, I'm {name} — crafting",
+    "heroHighlight": "digital experiences",
+    "heroTitleSuffix": "with precision.",
+    "tagline": "I design and build fast, accessible, and beautifully crafted web products — from pixel-perfect interfaces to resilient backends.",
+    "primaryCtaLabel": "View my work",
+    "resumeCtaLabel": "Download résumé",
+    "email": "gopis2k01@gmail.com",
+    "phone": "+91 77084 59948",
+    "whatsapp": "+91 7708459948",
+    "contactIntro": "Have a project in mind, a role to fill, or just want to say hello? My inbox is always open — I usually reply within a day.",
+    "github": "https://github.com/GopiS2001",
+    "linkedin": "www.linkedin.com/in/gopi-s-1181b5266ga",
+    "instagram": "https://www.instagram.com/_gopi_x01_?stkn=b2ExNzllYThteXN1",
+    "twitter": "",
+    "website": "",
+    "footerText": "Designed & built with care."
+  },
+  "sections": [
+    {
+      "key": "home",
+      "visible": true,
+      "showInNav": true,
+      "sortOrder": 1,
+      "navLabel": "Home",
+      "eyebrow": "",
+      "title": "",
+      "highlight": "",
+      "titleSuffix": ""
+    },
+    {
+      "key": "about",
+      "visible": true,
+      "showInNav": true,
+      "sortOrder": 2,
+      "navLabel": "About",
+      "eyebrow": "About",
+      "title": "A developer with a",
+      "highlight": "designer's eye",
+      "titleSuffix": "."
+    },
+    {
+      "key": "skills",
+      "visible": true,
+      "showInNav": true,
+      "sortOrder": 3,
+      "navLabel": "Skills",
+      "eyebrow": "Skills",
+      "title": "The toolkit behind",
+      "highlight": "the work",
+      "titleSuffix": "."
+    },
+    {
+      "key": "experience",
+      "visible": true,
+      "showInNav": true,
+      "sortOrder": 4,
+      "navLabel": "Experience",
+      "eyebrow": "Experience",
+      "title": "Where I've",
+      "highlight": "made an impact",
+      "titleSuffix": "."
+    },
+    {
+      "key": "projects",
+      "visible": true,
+      "showInNav": true,
+      "sortOrder": 5,
+      "navLabel": "Projects",
+      "eyebrow": "Selected work",
+      "title": "Projects I'm",
+      "highlight": "proud of",
+      "titleSuffix": "."
+    },
+    {
+      "key": "contact",
+      "visible": true,
+      "showInNav": true,
+      "sortOrder": 6,
+      "navLabel": "Contact",
+      "eyebrow": "Contact",
+      "title": "Let's build something",
+      "highlight": "remarkable",
+      "titleSuffix": "."
+    }
+  ],
+  "stats": [
+    {
+      "id": 1,
+      "value": "2.3",
+      "label": "Years experience"
+    },
+    {
+      "id": 2,
+      "value": "10+",
+      "label": "Projects shipped"
+    },
+    {
+      "id": 3,
+      "value": "10+",
+      "label": "Happy clients"
+    }
+  ],
+  "about": {
+    "paragraphs": [
+      "I'm a developer who sits at the intersection of engineering and design. I care about the details users feel but rarely notice — smooth interactions, thoughtful typography, and interfaces that load instantly.",
+      "Over the years I've helped startups and established teams turn ambitious ideas into polished products. I enjoy owning features end to end: shaping the problem, designing the system, writing the code, and measuring the outcome.",
+      "When I'm not shipping, you'll find me exploring new tools, contributing to open source, or sketching interface ideas in a notebook."
+    ],
+    "highlights": [
+      {
+        "id": 1,
+        "title": "Design-minded",
+        "text": "Interfaces with craft, rhythm and clarity."
+      },
+      {
+        "id": 2,
+        "title": "Performance-first",
+        "text": "Core Web Vitals in the green, always."
+      },
+      {
+        "id": 3,
+        "title": "End-to-end",
+        "text": "From database schema to deploy pipeline."
+      },
+      {
+        "id": 4,
+        "title": "Collaborative",
+        "text": "Clear communication, async-friendly."
+      }
+    ]
+  },
+  "skills": {
+    "groups": [
+      {
+        "id": 1,
+        "title": "Frontend",
+        "icon": "layout",
+        "skills": [
+          "HTML5",
+          "CSS",
+          "JavaScript",
+          "TypeScript",
+          "React.js",
+          "Next.js",
+          "Redux",
+          "Material UI",
+          "Tailwind CSS"
+        ]
+      },
+      {
+        "id": 2,
+        "title": "Backend",
+        "icon": "server",
+        "skills": [
+          "Node.js",
+          "Express.js",
+          "NestJS",
+          "REST API",
+          "API Design",
+          "API Integration"
+        ]
+      },
+      {
+        "id": 3,
+        "title": "Database",
+        "icon": "database",
+        "skills": [
+          "MySQL",
+          "MongoDB",
+          "Redis"
+        ]
+      },
+      {
+        "id": 4,
+        "title": "Authentication & Security",
+        "icon": "wrench",
+        "skills": [
+          "JWT",
+          "RBAC",
+          "bcrypt",
+          "OAuth",
+          "RSA Encryption"
+        ]
+      },
+      {
+        "id": 5,
+        "title": "Payment & Security",
+        "icon": "shield",
+        "skills": [
+          "Razorpay",
+          "ICICI Bank EazyPay UPI",
+          "Google Business Profile API"
+        ]
+      },
+      {
+        "id": 6,
+        "title": "UI & Tools",
+        "icon": "wrench",
+        "skills": [
+          "Tailwind CSS v4",
+          "MUI v5",
+          "ApexCharts",
+          "Bootstrap",
+          "Playwright"
+        ]
+      },
+      {
+        "id": 7,
+        "title": "Real-Time & Cloud",
+        "icon": "cloud",
+        "skills": [
+          "Socket.IO",
+          "WebSocket",
+          "Firebase"
+        ]
+      },
+      {
+        "id": 8,
+        "title": "Tools",
+        "icon": "sparkles",
+        "skills": [
+          "Git",
+          "GitHub",
+          "Postman",
+          "PlayWright",
+          "PM2",
+          "Vercel",
+          "Azure",
+          "Digital Ocean"
+        ]
+      }
+    ],
+    "marquee": [
+      "React.js",
+      "Next.js",
+      "TypeScript",
+      "Node.js",
+      "MySQL",
+      "MongoDB",
+      "NestJS",
+      "Git",
+      "Vercel"
+    ]
+  },
+  "experience": [
+    {
+      "id": 1,
+      "role": "MERN Stack Developer",
+      "company": "Trofeo Solutions",
+      "period": "September 2025 — August 2026",
+      "location": "Coimbatore, Tamil Nadu",
+      "description": "Designed a 3-tier system for 10+ user roles using React (Vite, TypeScript, Redux), NestJS (MongoDB) and a NestJS Bank API microservice (MySQL, TypeORM), with AES-256-CBC encrypted payloads. \nIntegrated the ICICI Bank EazyPay UPI API using RSA encryption, delivering QR generation, Collect Pay, refunds and callback webhooks.\nBuilt a real-time payment gateway with Socket.IO, pushing payment callbacks instantly to the correct sales device. \nSecured routes with JWT, refresh tokens and role-based guards for 10+ roles; added Firebase FCM notifications, Redis caching, cron-based PDF/Excel reports and ApexCharts dashboards.",
+      "stack": [
+        "Next.js",
+        "TypeScript",
+        "React.js",
+        "NestJS",
+        "MySql",
+        "Git",
+        "Github",
+        "Deployment",
+        "Templates"
+      ]
+    },
+    {
+      "id": 2,
+      "role": "MERN Stack Developer",
+      "company": "Aalan Tech Soft",
+      "period": "June 2024 — September 2025",
+      "location": "Salem, Tamil Nadu",
+      "description": "Developed an academy learning platform using React.js, Node.js, Express.js, and MongoDB.\nImplemented role-based access control and REST APIs for different user types, handling authentication, course management, database operations, and integration between frontend and backend services.",
+      "stack": [
+        "React",
+        "Node.js",
+        "MongoDB"
+      ]
+    },
+    {
+      "id": 3,
+      "role": "Java Full Stack Trainee",
+      "company": "Palle Technologies",
+      "period": "2019 — 2021",
+      "location": "Bengaluru, Karnataka",
+      "description": "Trained in Java Full Stack development, covering Core Java, OOP, Spring Boot, REST APIs and SQL databases.\nBuilt basic full-stack applications with debugging, testing and API integration.",
+      "stack": [
+        "Html",
+        "CSS",
+        "JavaScript",
+        "Java",
+        "OOPS",
+        "SpringBoot",
+        "Hibernate",
+        "MySql"
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "id": 1,
+      "title": "ASM DAIRY PRIVATE LIMITED",
+      "description": "Production-grade enterprise ERP for a dairy company - managing end-to-end sales, dispatch, UPI payments, production, packing, and realtime reporting across 10+ user roles.",
+      "tags": [
+        "React.js",
+        "TypeScript",
+        "NestJS",
+        "MongoDB",
+        "Flutter"
+      ],
+      "liveUrl": "https://live.asmdairy.com",
+      "sourceUrl": "#",
+      "imageUrl": "http://localhost:4000/uploads/3b4ab025-1808-4b52-8398-0fb95897d477.png",
+      "gradient": "from-amber-300 via-orange-400 to-rose-500",
+      "featured": true
+    },
+    {
+      "id": 2,
+      "title": "RevuLog",
+      "description": "Headless storefront with instant search, optimistic cart and a checkout flow tuned for conversion.",
+      "tags": [
+        "React.js"
+      ],
+      "liveUrl": "https://revulog-dev.web.app/auth/sign-in",
+      "sourceUrl": "#",
+      "imageUrl": "http://localhost:4000/uploads/2a88d4a2-330d-46a9-915b-3cc973594c90.png",
+      "gradient": "from-sky-300 via-indigo-400 to-violet-500",
+      "featured": true
+    },
+    {
+      "id": 3,
+      "title": "Noted",
+      "description": "A minimalist, offline-first notes app with markdown, tags and end-to-end sync.",
+      "tags": [
+        "PWA",
+        "IndexedDB",
+        "Node.js"
+      ],
+      "liveUrl": "#",
+      "sourceUrl": "#",
+      "imageUrl": "",
+      "gradient": "from-emerald-300 via-teal-400 to-cyan-500",
+      "featured": false
+    },
+    {
+      "id": 4,
+      "title": "Atlas Travel",
+      "description": "Trip planner with interactive maps, collaborative itineraries and smart budget tracking.",
+      "tags": [
+        "Next.js",
+        "Mapbox",
+        "Prisma"
+      ],
+      "liveUrl": "#",
+      "sourceUrl": "#",
+      "imageUrl": "",
+      "gradient": "from-fuchsia-300 via-pink-400 to-rose-500",
+      "featured": false
+    },
+    {
+      "id": 5,
+      "title": "Pulse UI",
+      "description": "An open-source component library with 40+ accessible, themeable components and full docs.",
+      "tags": [
+        "React",
+        "Storybook",
+        "A11y"
+      ],
+      "liveUrl": "#",
+      "sourceUrl": "#",
+      "imageUrl": "",
+      "gradient": "from-yellow-200 via-lime-300 to-emerald-400",
+      "featured": false
+    }
+  ]
+}

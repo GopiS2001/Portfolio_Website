@@ -1,0 +1,135 @@
+@import "tailwindcss";
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+:root {
+  --bg: #faf8f4;
+  --bg-elevated: #ffffff;
+  --fg: #16140f;
+  --muted: #6d675d;
+  --subtle: #a39d92;
+  --border: rgb(22 20 15 / 0.09);
+  --card: rgb(255 255 255 / 0.72);
+  /* --accent-light / --accent-dark come from the admin Configuration page */
+  --accent: var(--accent-light, #a87a32);
+  --accent-soft: color-mix(in srgb, var(--accent) 12%, transparent);
+  --glow: color-mix(in srgb, color-mix(in srgb, var(--accent) 70%, white) 35%, transparent);
+  color-scheme: light;
+}
+
+.dark {
+  --bg: #08080a;
+  --bg-elevated: #111114;
+  --fg: #f3efe7;
+  --muted: #a09b91;
+  --subtle: #6b675f;
+  --border: rgb(255 255 255 / 0.08);
+  --card: rgb(255 255 255 / 0.028);
+  --accent: var(--accent-dark, #d9b26a);
+  --accent-soft: color-mix(in srgb, var(--accent) 12%, transparent);
+  --glow: color-mix(in srgb, var(--accent) 18%, transparent);
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-elevated: var(--bg-elevated);
+  --color-fg: var(--fg);
+  --color-muted: var(--muted);
+  --color-subtle: var(--subtle);
+  --color-line: var(--border);
+  --color-card: var(--card);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  /* Admin-chosen Google Fonts override the bundled defaults */
+  --font-sans: var(--site-font-sans, var(--font-geist-sans));
+  --font-mono: var(--font-geist-mono);
+  --font-serif: var(--site-font-serif, var(--font-instrument-serif));
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Base font size from the admin Configuration page; every rem-based size scales with it */
+  font-size: var(--site-font-size, 16px);
+}
+
+/* Heading size multiplier from the admin Configuration page */
+h1,
+h2,
+h3 {
+  zoom: var(--heading-scale, 1);
+}
+
+body {
+  background: var(--bg);
+  color: var(--fg);
+  transition:
+    background-color 0.4s ease,
+    color 0.4s ease;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+/* Subtle film grain for a tactile, premium surface */
+.grain::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  pointer-events: none;
+  opacity: 0.035;
+  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
+}
+
+.bg-grid {
+  background-image:
+    linear-gradient(var(--border) 1px, transparent 1px),
+    linear-gradient(90deg, var(--border) 1px, transparent 1px);
+  background-size: 64px 64px;
+  mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 30%, transparent 75%);
+}
+
+.text-gradient {
+  background: linear-gradient(110deg, var(--fg) 20%, var(--accent) 50%, var(--fg) 80%);
+  background-size: 200% auto;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  animation: shine 8s linear infinite;
+}
+
+@keyframes shine {
+  to {
+    background-position: 200% center;
+  }
+}
+
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.animate-marquee {
+  animation: marquee 40s linear infinite;
+}
+
+.no-animations .text-gradient,
+.no-animations .animate-marquee,
+.no-animations .animate-bounce,
+.no-animations .animate-ping {
+  animation: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .text-gradient,
+  .animate-marquee {
+    animation: none;
+  }
+}
