@@ -4,8 +4,9 @@ const nextConfig: NextConfig = {
   // Fully static site: `npm run build` emits plain HTML/CSS/JS into `out/`
   output: "export",
   images: { unoptimized: true },
-  // Allow opening the dev server from other devices on the network (hostname only, no port)
-  allowedDevOrigins: ["10.110.247.2"],
+  // Allow opening the dev server from any private LAN address (your Wi-Fi IP changes).
+  // Hostnames only, no port; `*` matches one part of the address.
+  allowedDevOrigins: ["10.*.*.*", "192.168.*.*", "172.*.*.*"],
   turbopack: {
     rules: {
       "*.css": {
