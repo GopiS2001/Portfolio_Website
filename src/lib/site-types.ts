@@ -95,6 +95,8 @@ export type SiteData = {
     tags: string[];
     liveUrl: string;
     sourceUrl: string;
+    /** Extra live links (admin dashboard, web app, …). */
+    links?: { label: string; url: string }[] | null;
     imageUrl: string;
     /** Android build to download; empty or missing hides the button. */
     apkUrl?: string;
