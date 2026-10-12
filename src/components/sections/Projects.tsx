@@ -139,7 +139,7 @@ export function Projects() {
                   </div>
                 </div>
                 <p className="mt-3 max-w-2xl text-muted">{project.description}</p>
-                {(project.apkUrl || project.links?.length) && (
+                {Boolean(project.apkUrl || project.links?.length) && (
                   <div className="mt-5 flex flex-wrap gap-2">
                     {project.links?.map((link) => (
                       <a
