@@ -94,6 +94,8 @@ export type SiteData = {
     liveUrl: string;
     sourceUrl: string;
     imageUrl: string;
+    /** Android build to download; empty or missing hides the button. */
+    apkUrl?: string;
     gradient: string;
     featured: boolean;
   }[];
