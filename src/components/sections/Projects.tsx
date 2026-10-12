@@ -136,16 +136,28 @@ export function Projects() {
                   </div>
                 </div>
                 <p className="mt-3 max-w-2xl text-muted">{project.description}</p>
-                {project.apkUrl && (
-                  <a
-                    href={project.apkUrl}
-                    download
-                    className="mt-5 inline-flex w-fit items-center gap-2 rounded-full border border-line px-4 py-2 text-sm font-medium transition hover:border-accent/60 hover:text-accent"
-                  >
-                    <Smartphone className="size-4" />
-                    Download APK
-                    <Download className="size-4" />
-                  </a>
+                {(project.apkUrl || project.links?.length) && (
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {project.links?.map((link) => (
+                      <a
+                        key={`${link.label}-${link.url}`}
+                        href={link.url}
+                        target="_blank"
+                        rel="noreferrer"
+                        className={pill}
+                      >
+                        {link.label}
+                        <ArrowUpRight className="size-4" />
+                      </a>
+                    ))}
+                    {project.apkUrl && (
+                      <a href={project.apkUrl} download className={pill}>
+                        <Smartphone className="size-4" />
+                        Download APK
+                        <Download className="size-4" />
+                      </a>
+                    )}
+                  </div>
                 )}
                 <div className="mt-auto flex flex-wrap gap-2 pt-6">
                   {project.tags.map((tag) => (
