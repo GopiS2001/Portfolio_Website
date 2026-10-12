@@ -11,6 +11,9 @@ import { useSite } from "../SiteProvider";
 // A link button shows whenever a URL was entered in the dashboard (leave it empty to hide it).
 const usable = (url: string) => Boolean(url);
 
+const pill =
+  "inline-flex items-center gap-2 rounded-full border border-line px-4 py-2 text-sm font-medium transition hover:border-accent/60 hover:text-accent";
+
 // Keep in sync with PROJECT_CATEGORIES in ADMIN DASHBOARD/src/portfolio/options.ts.
 const PROJECT_CATEGORIES = [
   { value: "office", label: "Office projects" },
