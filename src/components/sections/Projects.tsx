@@ -10,15 +10,58 @@ import { useSite } from "../SiteProvider";
 // A link button shows whenever a URL was entered in the dashboard (leave it empty to hide it).
 const usable = (url: string) => Boolean(url);
 
+// Keep in sync with PROJECT_CATEGORIES in ADMIN DASHBOARD/src/portfolio/options.ts.
+const PROJECT_CATEGORIES = [
+  { value: "office", label: "Office projects" },
+  { value: "personal", label: "My projects" },
+] as const;
+
+type Filter = "all" | (typeof PROJECT_CATEGORIES)[number]["value"];
+
 export function Projects() {
   const { projects } = useSite().data;
+  const [filter, setFilter] = useState<Filter>("all");
+
+  const categoryOf = (p: (typeof projects)[number]) => p.category ?? "personal";
+  // Only offer tabs for categories that actually have projects.
+  const tabs = [
+    { value: "all" as Filter, label: "All", count: projects.length },
+    ...PROJECT_CATEGORIES.map((c) => ({
+      value: c.value as Filter,
+      label: c.label,
+      count: projects.filter((p) => categoryOf(p) === c.value).length,
+    })).filter((t) => t.count > 0),
+  ];
+  const shown = filter === "all" ? projects : projects.filter((p) => categoryOf(p) === filter);
 
   return (
     <Section id="projects">
+      {tabs.length > 2 && (
+        <div role="tablist" aria-label="Filter projects" className="mb-8 flex flex-wrap gap-2">
+          {tabs.map((tab) => {
+            const active = tab.value === filter;
+            return (
+              <button
+                key={tab.value}
+                type="button"
+                role="tab"
+                aria-selected={active}
+                onClick={() => setFilter(tab.value)}
+                className={`inline-flex items-center gap-2 rounded-full border px-4 py-2 text-sm transition ${
+                  active ? "border-fg bg-fg text-bg" : "border-line text-muted hover:border-accent/50 hover:text-fg"
+                }`}
+              >
+                {tab.label}
+                <span className={`font-mono text-xs ${active ? "opacity-70" : "opacity-60"}`}>{tab.count}</span>
+              </button>
+            );
+          })}
+        </div>
+      )}
       <div className="grid gap-5 md:grid-cols-2">
-        {projects.map((project, i) => (
+        {shown.map((project, i) => (
           <Reveal
-            key={project.id}
+            key={`${filter}-${project.id}`}
             delay={(i % 2) * 0.08}
             className={project.featured ? "md:col-span-2" : undefined}
           >
