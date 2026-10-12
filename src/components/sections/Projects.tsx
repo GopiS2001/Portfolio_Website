@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { ArrowUpRight, Download, Smartphone } from "lucide-react";
 import { safeGradient } from "@/lib/appearance";
 import { Reveal } from "../Reveal";
