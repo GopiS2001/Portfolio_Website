@@ -89,6 +89,8 @@ export type SiteData = {
   projects: {
     id: number;
     title: string;
+    /** Missing in older snapshots — treated as "personal". */
+    category?: "office" | "personal";
     description: string;
     tags: string[];
     liveUrl: string;
