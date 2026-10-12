@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowUpRight } from "lucide-react";
+import { ArrowUpRight, Download, Smartphone } from "lucide-react";
 import { safeGradient } from "@/lib/appearance";
 import { Reveal } from "../Reveal";
 import { Section } from "../Section";
