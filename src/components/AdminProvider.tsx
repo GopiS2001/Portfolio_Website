@@ -71,20 +71,26 @@ export function AdminProvider({ children }: { children: ReactNode }) {
     return () => clearTimeout(id);
   }, [retryAt, restore]);
 
-  // Keep the access token fresh while signed in, and catch up when the tab becomes visible
+  // Keep the access token fresh while signed in, and catch up when the tab becomes visible.
+  // Stops for good as soon as the session ends (status leaves "signed-in").
   useEffect(() => {
     if (status !== "signed-in") return;
+    let cancelled = false;
+    let timer: ReturnType<typeof setTimeout>;
     const due = () => getAccessTokenExpiry() - REFRESH_MARGIN_MS;
-    let timer = setTimeout(function tick() {
-      restore().then(() => {
-        timer = setTimeout(tick, Math.max(5_000, due() - Date.now()));
-      });
-    }, Math.max(0, due() - Date.now()));
+    const schedule = (minDelay: number) => {
+      timer = setTimeout(async () => {
+        await restore();
+        if (!cancelled) schedule(5_000);
+      }, Math.max(minDelay, due() - Date.now()));
+    };
+    schedule(0);
     const onVisible = () => {
-      if (document.visibilityState === "visible" && Date.now() >= due()) restore();
+      if (!cancelled && document.visibilityState === "visible" && Date.now() >= due()) restore();
     };
     document.addEventListener("visibilitychange", onVisible);
     return () => {
+      cancelled = true;
       clearTimeout(timer);
       document.removeEventListener("visibilitychange", onVisible);
     };
