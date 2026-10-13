@@ -3,6 +3,7 @@
 import { createContext, useContext, useEffect, useState, type ReactNode } from "react";
 import { MotionConfig } from "motion/react";
 import { apiUrl } from "@/lib/api";
+import { localizeUploads } from "@/lib/uploads";
 import { BUILT_IN_SANS, BUILT_IN_SERIF, googleFontHref } from "@/lib/appearance";
 import type { SiteData, SiteSettings } from "@/lib/site-types";
 
@@ -44,24 +45,30 @@ function readCache(): SiteData | null {
  */
 export function SiteProvider({ initial, children }: { initial: SiteData; children: ReactNode }) {
   const [state, setState] = useState<{ data: SiteData; source: DataSource }>({
-    data: initial,
+    data: localizeUploads(initial),
     source: "build",
   });
 
   useEffect(() => {
     let cancelled = false;
-    const apply = (data: SiteData, source: DataSource) => !cancelled && setState({ data, source });
+    const apply = (data: SiteData, source: DataSource) =>
+      !cancelled && setState({ data: localizeUploads(data), source });
 
-    (async () => {
-      try {
-        const live = await getJson(apiUrl("/public/site"), 5000);
+    let gotLive = false;
+
+    // Live API. A free host can take up to a minute to wake from sleep, so wait that long —
+    // the copies below are shown meanwhile and replaced as soon as the live data arrives.
+    getJson(apiUrl("/public/site"), 60_000)
+      .then((live) => {
+        gotLive = true;
         apply(live, "live");
         try {
           localStorage.setItem(CACHE_KEY, JSON.stringify(live));
         } catch {}
-        return;
-      } catch {}
+      })
+      .catch(() => {});
 
+    (async () => {
       const candidates: { data: SiteData; source: DataSource }[] = [];
       try {
         candidates.push({ data: await getJson("/site-data.json", 4000), source: "snapshot" });
@@ -73,7 +80,7 @@ export function SiteProvider({ initial, children }: { initial: SiteData; childre
       const newest = candidates
         .filter((c) => c.data.generatedAt > initial.generatedAt)
         .sort((a, b) => b.data.generatedAt.localeCompare(a.data.generatedAt))[0];
-      if (newest) apply(newest.data, newest.source);
+      if (newest && !gotLive) apply(newest.data, newest.source);
     })();
 
     return () => {
