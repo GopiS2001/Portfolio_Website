@@ -59,9 +59,17 @@ export function AdminProvider({ children }: { children: ReactNode }) {
   }, []);
 
   // On open: only browsers that signed in before ask the API (visitors make no auth calls)
+  // (localStorage only exists in the browser, so this can't be decided during prerendering)
   useEffect(() => {
-    if (hasSessionHint()) restore();
-    else setStatus("signed-out");
+    let cancelled = false;
+    Promise.resolve().then(() => {
+      if (cancelled) return;
+      if (hasSessionHint()) restore();
+      else setStatus("signed-out");
+    });
+    return () => {
+      cancelled = true;
+    };
   }, [restore]);
 
   // Retry after a network failure
