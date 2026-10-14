@@ -1,6 +1,7 @@
 "use client";
 
-import { useEffect, useState, type FormEvent } from "react";
+import { useEffect, useState, useSyncExternalStore, type FormEvent } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowLeft, Eye, EyeOff, LoaderCircle, Lock } from "lucide-react";
 import { useAdmin } from "./AdminProvider";
@@ -11,6 +12,8 @@ const REASONS: Record<string, string> = {
   "signed-out": "You've been signed out.",
 };
 
+const noSubscribe = () => () => {};
+
 export function LoginForm() {
   const router = useRouter();
   const { status, signIn } = useAdmin();
@@ -18,14 +21,15 @@ export function LoginForm() {
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [notice, setNotice] = useState<string | null>(null);
   const [busy, setBusy] = useState(false);
 
-  // Static export: read ?reason= in the browser
-  useEffect(() => {
-    const reason = new URLSearchParams(window.location.search).get("reason");
-    if (reason && REASONS[reason]) setNotice(REASONS[reason]);
-  }, []);
+  // Static export: ?reason= exists only in the browser (null while prerendering)
+  const reason = useSyncExternalStore(
+    noSubscribe,
+    () => new URLSearchParams(window.location.search).get("reason"),
+    () => null,
+  );
+  const notice = reason ? (REASONS[reason] ?? null) : null;
 
   // Already signed in (session restored from the cookie) — go to the site
   useEffect(() => {
@@ -53,9 +57,9 @@ export function LoginForm() {
       <div className="pointer-events-none absolute inset-x-0 top-0 h-80 bg-[radial-gradient(60%_60%_at_50%_0%,var(--glow),transparent)]" />
 
       <div className="relative w-full max-w-sm">
-        <a href="/" className="mb-8 inline-flex items-center gap-2 text-sm text-muted transition hover:text-fg">
+        <Link href="/" className="mb-8 inline-flex items-center gap-2 text-sm text-muted transition hover:text-fg">
           <ArrowLeft className="size-4" /> Back to the website
-        </a>
+        </Link>
 
         <div className="rounded-3xl border border-line bg-card p-7 shadow-[0_24px_60px_-24px_rgb(0_0_0/0.35)] backdrop-blur-xl">
           <span className="mb-5 grid size-11 place-items-center rounded-2xl bg-accent-soft text-accent">

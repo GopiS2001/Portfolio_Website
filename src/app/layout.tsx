@@ -2,6 +2,8 @@ import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import snapshot from "@/data/site-snapshot.json";
 import type { SiteData } from "@/lib/site-types";
+import { AdminProvider } from "@/components/AdminProvider";
+import { AdminBar } from "@/components/AdminBar";
 import "./globals.css";
 
 const site = snapshot as SiteData;
@@ -65,7 +67,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       </head>
       {/* Browser extensions (ColorZilla, form fillers) inject attributes on <body> before hydration */}
       <body className="grain min-h-full font-sans" suppressHydrationWarning>
-        {children}
+        {/* Admin session (signed-in admins get a floating bar; visitors see nothing) */}
+        <AdminProvider>
+          {children}
+          <AdminBar />
+        </AdminProvider>
       </body>
     </html>
   );

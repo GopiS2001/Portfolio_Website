@@ -1,6 +1,7 @@
 // Runs before `next build`: pulls the latest content from the API into the bundled snapshot,
 // so the exported static site contains the exact current data. If the API is unreachable the
-// existing snapshot (last written by the backend) is kept and the build continues.
+// existing snapshot (last written by the backend) is kept and the build continues. Waits up to a
+// minute, because a free hosted API (Render) may need that long to wake up.
 //
 // It also copies the uploaded files the content uses (profile photo, project covers…) from
 // ../BACKEND/uploads into public/uploads, so a deployed site (e.g. on Vercel) can show them
@@ -15,7 +16,7 @@ const UPLOADS_SRC = path.resolve("../BACKEND/uploads");
 const UPLOADS_DEST = path.resolve("public/uploads");
 
 try {
-  const res = await fetch(`${api}/public/site`, { signal: AbortSignal.timeout(5000) });
+  const res = await fetch(`${api}/public/site`, { signal: AbortSignal.timeout(60000) });
   if (!res.ok) throw new Error(`HTTP ${res.status}`);
   const data = await res.json();
   const json = JSON.stringify(data, null, 2);
