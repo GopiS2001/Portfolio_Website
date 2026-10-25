@@ -69,7 +69,7 @@ export function StyleSwitcher() {
   };
 
   const choose = (style: DesignStyle) => {
-    document.documentElement.dataset.style = style;
+    document.documentElement.setAttribute("data-style", style);
     try {
       localStorage.setItem(STYLE_KEY, style);
     } catch {}
