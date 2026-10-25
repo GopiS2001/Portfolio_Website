@@ -80,7 +80,6 @@ const personLd = {
   sameAs: socialLinks(site.profile)
     .filter((l) => l.label !== "WhatsApp")
     .map((l) => l.href),
-  image: cleanUrl(site.profile.avatarUrl).startsWith("http") ? undefined : undefined,
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
