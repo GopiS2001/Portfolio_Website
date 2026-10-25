@@ -1,277 +1,207 @@
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
-/* Layout tweaks that only apply in the Zephyr design style (zephyr:hidden, zephyr:uppercase, …) */
-@custom-variant zephyr (&:where([data-style="zephyr"], [data-style="zephyr"] *));
 
+/* ---------------------------------------------------------------------------
+   Neumorphism design system. Every surface is the page colour; depth comes only from a
+   light shadow (top-left) and a dark shadow (bottom-right). Cards and the page must share
+   one colour, so --surface always equals --bg.
+   ------------------------------------------------------------------------- */
 :root {
-  --bg: #faf8f4;
-  --bg-elevated: #ffffff;
-  --fg: #16140f;
-  --muted: #6d675d;
-  --subtle: #a39d92;
-  --border: rgb(22 20 15 / 0.09);
-  --card: rgb(255 255 255 / 0.72);
-  /* --accent-light / --accent-dark come from the admin Configuration page */
-  --accent: var(--accent-light, #a87a32);
-  --accent-soft: color-mix(in srgb, var(--accent) 12%, transparent);
-  --glow: color-mix(in srgb, color-mix(in srgb, var(--accent) 70%, white) 35%, transparent);
+  --bg: #e6e9ef;
+  --surface: #e6e9ef;
+  --shadow-dark: #c3c8d1;
+  --shadow-light: #ffffff;
+  --text: #2d3340; /* ≥ 7:1 on --bg */
+  --text-muted: #5b6375; /* ≥ 4.5:1 on --bg */
+  --text-subtle: #6b7385;
+  --accent: #4f6ef7;
+  --accent-2: #7c5cff;
+  --accent-ink: #3552d8; /* accent text on --bg, ≥ 4.5:1 */
+  --success: #22a06b;
+  --line: rgb(45 51 64 / 0.1);
+
+  --neu-distance: 8px;
+  --neu-blur: 16px;
+  --neu-raised:
+    var(--neu-distance) var(--neu-distance) var(--neu-blur) var(--shadow-dark),
+    calc(var(--neu-distance) * -1) calc(var(--neu-distance) * -1) var(--neu-blur) var(--shadow-light);
+  --neu-raised-hover:
+    10px 10px 20px var(--shadow-dark),
+    -10px -10px 20px var(--shadow-light);
+  --neu-raised-sm:
+    4px 4px 8px var(--shadow-dark),
+    -4px -4px 8px var(--shadow-light);
+  --neu-pressed:
+    inset 6px 6px 12px var(--shadow-dark),
+    inset -6px -6px 12px var(--shadow-light);
+  --neu-pressed-sm:
+    inset 3px 3px 6px var(--shadow-dark),
+    inset -3px -3px 6px var(--shadow-light);
+  --neu-concave:
+    inset 2px 2px 4px var(--shadow-dark),
+    inset -2px -2px 4px var(--shadow-light),
+    var(--neu-raised);
+
+  --r-sm: 12px;
+  --r-md: 20px;
+  --r-lg: 28px;
+
   color-scheme: light;
 }
 
 .dark {
-  --bg: #08080a;
-  --bg-elevated: #111114;
-  --fg: #f3efe7;
-  --muted: #a09b91;
-  --subtle: #6b675f;
-  --border: rgb(255 255 255 / 0.08);
-  --card: rgb(255 255 255 / 0.028);
-  --accent: var(--accent-dark, #d9b26a);
-  --accent-soft: color-mix(in srgb, var(--accent) 12%, transparent);
-  --glow: color-mix(in srgb, var(--accent) 18%, transparent);
+  --bg: #23262d;
+  --surface: #23262d;
+  --shadow-dark: #1a1c21;
+  --shadow-light: #2c3039;
+  --text: #e8eaf0;
+  --text-muted: #a3a9b8;
+  --text-subtle: #8a91a1;
+  --accent: #7b93ff;
+  --accent-2: #a48bff;
+  --accent-ink: #92a6ff;
+  --success: #3ecf8e;
+  --line: rgb(255 255 255 / 0.07);
   color-scheme: dark;
 }
 
-/* ---------------------------------------------------------------------------
-   Design styles — chosen on the admin Configuration page (data-style on <html>), optionally
-   switchable by visitors. Each style sets the page colour and the surface tokens below;
-   components draw cards with .ui-raised, fields / tags / the active nav oval with .ui-inset,
-   and add .ui-press to sink in when clicked. Keep in step with the mobile app's themes.
-     --s-fill / --s-well   raised / pressed-in surface (may be a gradient)
-     --s-raised / --s-inset box-shadows
-     --s-edge / --s-edge-well 1px rims (transparent where the style has none)
-     --s-float            fill for things floating over content (navbar, menus)
-     --s-blur             backdrop-filter (glass)
-   ------------------------------------------------------------------------- */
-
-/* Neumorphism (default): one colour, depth from a highlight + shade pair */
-:root {
-  --bg: #ece8e1;
-  --bg-elevated: #ece8e1;
-  --card: #ece8e1;
-  --s-light: #ffffff;
-  --s-dark: rgb(166 155 138 / 0.55);
-  --s-fill: var(--bg);
-  --s-well: var(--bg);
-  --s-float: color-mix(in srgb, var(--bg) 92%, transparent);
-  --s-raised: 6px 6px 14px var(--s-dark), -6px -6px 14px var(--s-light);
-  --s-raised-sm: 3px 3px 7px var(--s-dark), -3px -3px 7px var(--s-light);
-  --s-inset: inset 4px 4px 9px var(--s-dark), inset -4px -4px 9px var(--s-light);
-  --s-edge: transparent;
-  --s-edge-well: transparent;
-  --s-blur: none;
-  --s-backdrop: none;
-}
+/* Names the rest of the codebase (admin bar, login, maintenance) already uses */
+:root,
 .dark {
-  --bg: #1e1d1b;
-  --bg-elevated: #1e1d1b;
-  --card: #1e1d1b;
-  --s-light: rgb(255 255 255 / 0.05);
-  --s-dark: rgb(0 0 0 / 0.55);
-}
-
-/* Glassmorphism: frosted translucent panes with a bright rim over a colourful backdrop */
-[data-style="glassmorphism"] {
-  --bg: #dcd6f7;
-  --bg-elevated: rgb(255 255 255 / 0.55);
-  --card: rgb(255 255 255 / 0.35);
-  --s-fill: rgb(255 255 255 / 0.32);
-  --s-well: rgb(255 255 255 / 0.2);
-  --s-float: rgb(255 255 255 / 0.45);
-  --s-raised: 0 8px 32px rgb(31 38 135 / 0.14), inset 0 1px 0 rgb(255 255 255 / 0.7);
-  --s-raised-sm: 0 4px 14px rgb(31 38 135 / 0.14), inset 0 1px 0 rgb(255 255 255 / 0.7);
-  --s-inset: inset 0 2px 8px rgb(31 38 135 / 0.12);
-  --s-edge: rgb(255 255 255 / 0.65);
-  --s-edge-well: rgb(255 255 255 / 0.45);
-  --s-blur: blur(16px) saturate(160%);
-  --s-backdrop:
-    radial-gradient(38rem 38rem at 88% -6%, #fbc2eb 0, transparent 62%),
-    radial-gradient(42rem 42rem at -8% 64%, #a1c4fd 0, transparent 62%),
-    linear-gradient(135deg, #c2e9fb, #e0c3fc);
-}
-.dark[data-style="glassmorphism"] {
-  --bg: #120f2e;
-  --bg-elevated: rgb(255 255 255 / 0.08);
-  --card: rgb(255 255 255 / 0.06);
-  --s-fill: rgb(255 255 255 / 0.06);
-  --s-well: rgb(0 0 0 / 0.22);
-  --s-float: rgb(20 16 48 / 0.55);
-  --s-raised: 0 8px 32px rgb(0 0 0 / 0.35), inset 0 1px 0 rgb(255 255 255 / 0.12);
-  --s-raised-sm: 0 4px 14px rgb(0 0 0 / 0.35), inset 0 1px 0 rgb(255 255 255 / 0.12);
-  --s-inset: inset 0 2px 8px rgb(0 0 0 / 0.35);
-  --s-edge: rgb(255 255 255 / 0.16);
-  --s-edge-well: rgb(255 255 255 / 0.08);
-  --s-backdrop:
-    radial-gradient(38rem 38rem at 88% -6%, #0e5e6f 0, transparent 62%),
-    radial-gradient(42rem 42rem at -8% 64%, #3a1c71 0, transparent 62%),
-    linear-gradient(135deg, #0b1026, #2a1a5e);
-}
-
-/* Claymorphism: puffy pastel clay — soft drop shadow plus inner highlight and inner shade */
-[data-style="claymorphism"] {
-  --bg: #f3ede4;
-  --bg-elevated: #fdfaf5;
-  --card: #fdfaf5;
-  --s-fill: #fdfaf5;
-  --s-well: #ebe3d6;
-  --s-float: rgb(253 250 245 / 0.92);
-  --s-raised:
-    10px 14px 28px rgb(150 120 80 / 0.25), inset -5px -5px 10px rgb(150 120 80 / 0.16),
-    inset 5px 5px 10px rgb(255 255 255 / 0.9);
-  --s-raised-sm:
-    5px 7px 14px rgb(150 120 80 / 0.25), inset -3px -3px 6px rgb(150 120 80 / 0.16),
-    inset 3px 3px 6px rgb(255 255 255 / 0.9);
-  --s-inset: inset 5px 5px 10px rgb(150 120 80 / 0.25), inset -5px -5px 10px rgb(255 255 255 / 0.85);
-}
-.dark[data-style="claymorphism"] {
-  --bg: #221e1a;
-  --bg-elevated: #332d27;
-  --card: #332d27;
-  --s-fill: #332d27;
-  --s-well: #1b1814;
-  --s-float: rgb(51 45 39 / 0.92);
-  --s-raised:
-    10px 14px 28px rgb(0 0 0 / 0.55), inset -5px -5px 10px rgb(0 0 0 / 0.35),
-    inset 5px 5px 10px rgb(255 255 255 / 0.08);
-  --s-raised-sm:
-    5px 7px 14px rgb(0 0 0 / 0.55), inset -3px -3px 6px rgb(0 0 0 / 0.35),
-    inset 3px 3px 6px rgb(255 255 255 / 0.08);
-  --s-inset: inset 5px 5px 10px rgb(0 0 0 / 0.5), inset -5px -5px 10px rgb(255 255 255 / 0.06);
-}
-
-/* Skeuomorphism: tactile real materials — paper / leather tones, sheen, crisp edges, drop shadows */
-[data-style="skeuomorphism"] {
-  --bg: #d9d4ca;
-  --bg-elevated: #f4f1ea;
-  --card: #f4f1ea;
-  --s-fill: linear-gradient(#fbf9f4, #ebe6dc);
-  --s-well: #e2dcd0;
-  --s-float: linear-gradient(rgb(251 249 244 / 0.96), rgb(235 230 220 / 0.96));
-  --s-raised:
-    inset 0 1px 0 rgb(255 255 255 / 0.95), 0 1px 1px rgb(0 0 0 / 0.18), 0 4px 10px rgb(40 30 15 / 0.25);
-  --s-raised-sm: inset 0 1px 0 rgb(255 255 255 / 0.95), 0 1px 1px rgb(0 0 0 / 0.2), 0 2px 5px rgb(40 30 15 / 0.22);
-  --s-inset: inset 0 2px 5px rgb(40 30 15 / 0.3), 0 1px 0 rgb(255 255 255 / 0.8);
-  --s-edge: rgb(60 48 30 / 0.3);
-  --s-edge-well: rgb(60 48 30 / 0.32);
-}
-.dark[data-style="skeuomorphism"] {
-  --bg: #1b1a18;
-  --bg-elevated: #3a3834;
-  --card: #3a3834;
-  --s-fill: linear-gradient(#46433e, #33312d);
-  --s-well: #252421;
-  --s-float: linear-gradient(rgb(70 67 62 / 0.96), rgb(51 49 45 / 0.96));
-  --s-raised:
-    inset 0 1px 0 rgb(255 255 255 / 0.12), 0 1px 1px rgb(0 0 0 / 0.5), 0 4px 10px rgb(0 0 0 / 0.55);
-  --s-raised-sm: inset 0 1px 0 rgb(255 255 255 / 0.12), 0 1px 1px rgb(0 0 0 / 0.5), 0 2px 5px rgb(0 0 0 / 0.5);
-  --s-inset: inset 0 2px 5px rgb(0 0 0 / 0.6), 0 1px 0 rgb(255 255 255 / 0.08);
-  --s-edge: rgb(0 0 0 / 0.65);
-  --s-edge-well: rgb(0 0 0 / 0.6);
-}
-
-/* Zephyr: sage haze lit by a warm lamp glow, hairline-rimmed translucent panes,
-   Playfair Display italics over DM Sans. Sets its own ink colours, so dark repeats them all. */
-[data-style="zephyr"] {
-  --bg: #d6dbd0;
-  --bg-elevated: rgb(255 255 255 / 0.5);
-  --fg: #1c211c;
-  --muted: #566052;
-  --subtle: #8b9487;
-  --border: rgb(28 33 28 / 0.12);
-  --card: rgb(255 255 255 / 0.26);
-  --s-fill: rgb(255 255 255 / 0.24);
-  --s-well: rgb(28 33 28 / 0.06);
-  --s-float: rgb(222 227 216 / 0.78);
-  --s-raised: inset 0 1px 0 rgb(255 255 255 / 0.45), 0 14px 34px -16px rgb(38 48 36 / 0.35);
-  --s-raised-sm: inset 0 1px 0 rgb(255 255 255 / 0.45), 0 6px 16px -8px rgb(38 48 36 / 0.4);
-  --s-inset: inset 0 1px 3px rgb(28 33 28 / 0.1);
-  --s-edge: rgb(255 255 255 / 0.55);
-  --s-edge-well: rgb(28 33 28 / 0.1);
-  --s-blur: blur(12px) saturate(120%);
-  --s-backdrop:
-    radial-gradient(52rem 36rem at 82% 4%, rgb(255 226 170 / 0.55) 0, transparent 60%),
-    radial-gradient(46rem 40rem at -6% 70%, rgb(150 163 146 / 0.45) 0, transparent 62%),
-    linear-gradient(180deg, #c3cbbe, #dde1d7 45%, #cfd5c9);
-  --style-font-sans: var(--font-dm-sans);
-  --style-font-serif: var(--font-playfair);
-}
-.dark[data-style="zephyr"] {
-  --bg: #151916;
-  --bg-elevated: rgb(255 255 255 / 0.06);
-  --fg: #eceee7;
-  --muted: #a2ab9e;
-  --subtle: #6c7569;
-  --border: rgb(255 255 255 / 0.09);
-  --card: rgb(255 255 255 / 0.04);
-  --s-fill: rgb(255 255 255 / 0.045);
-  --s-well: rgb(0 0 0 / 0.22);
-  --s-float: rgb(27 32 28 / 0.78);
-  --s-raised: inset 0 1px 0 rgb(255 255 255 / 0.07), 0 14px 34px -16px rgb(0 0 0 / 0.7);
-  --s-raised-sm: inset 0 1px 0 rgb(255 255 255 / 0.07), 0 6px 16px -8px rgb(0 0 0 / 0.7);
-  --s-inset: inset 0 1px 3px rgb(0 0 0 / 0.4);
-  --s-edge: rgb(255 255 255 / 0.12);
-  --s-edge-well: rgb(255 255 255 / 0.06);
-  --s-backdrop:
-    radial-gradient(52rem 36rem at 82% 4%, rgb(232 172 92 / 0.14) 0, transparent 60%),
-    radial-gradient(46rem 40rem at -6% 70%, rgb(96 112 92 / 0.22) 0, transparent 62%),
-    linear-gradient(180deg, #1e241f, #141815 50%, #181d19);
-}
-
-/* Components layer: Tailwind utilities (hover:border-accent/40, rounded-*, padding) still win */
-@layer components {
-  .ui-raised {
-    background: var(--s-fill);
-    box-shadow: var(--s-raised);
-    border: 1px solid var(--s-edge);
-    -webkit-backdrop-filter: var(--s-blur);
-    backdrop-filter: var(--s-blur);
-  }
-  .ui-inset {
-    background: var(--s-well);
-    box-shadow: var(--s-inset);
-    border: 1px solid var(--s-edge-well);
-  }
-  /* Navbar when scrolled, menus, the admin bar: mostly opaque so text underneath doesn't clash */
-  .ui-float {
-    background: var(--s-float);
-    box-shadow: var(--s-raised);
-    border: 1px solid var(--s-edge);
-    -webkit-backdrop-filter: blur(18px) saturate(160%);
-    backdrop-filter: blur(18px) saturate(160%);
-  }
-  /* Solid accent / ink buttons keep their colour and gain the style's depth */
-  .ui-solid {
-    box-shadow: var(--s-raised-sm);
-  }
-  .ui-press {
-    transition:
-      box-shadow 0.18s ease,
-      transform 0.18s ease,
-      background-color 0.3s ease,
-      border-color 0.3s ease,
-      color 0.3s ease;
-  }
-  .ui-press:active {
-    box-shadow: var(--s-inset);
-    transform: translateY(1px);
-  }
+  --fg: var(--text);
+  --muted: var(--text-muted);
+  --subtle: var(--text-subtle);
+  --border: var(--line);
+  --card: var(--surface);
+  --bg-elevated: var(--surface);
+  --accent-soft: color-mix(in srgb, var(--accent) 14%, transparent);
+  --glow: color-mix(in srgb, var(--accent) 22%, transparent);
 }
 
 @theme inline {
   --color-bg: var(--bg);
+  --color-surface: var(--surface);
   --color-elevated: var(--bg-elevated);
-  --color-fg: var(--fg);
-  --color-muted: var(--muted);
-  --color-subtle: var(--subtle);
-  --color-line: var(--border);
+  --color-fg: var(--text);
+  --color-muted: var(--text-muted);
+  --color-subtle: var(--text-subtle);
+  --color-line: var(--line);
   --color-card: var(--card);
   --color-accent: var(--accent);
+  --color-accent-2: var(--accent-2);
+  --color-accent-ink: var(--accent-ink);
   --color-accent-soft: var(--accent-soft);
-  /* Admin-chosen Google Fonts override the design style's pair, which overrides the bundled defaults */
-  --font-sans: var(--site-font-sans, var(--style-font-sans, var(--font-geist-sans)));
-  --font-mono: var(--font-geist-mono);
-  --font-serif: var(--site-font-serif, var(--style-font-serif, var(--font-instrument-serif)));
+  --color-success: var(--success);
+  --shadow-neu: var(--neu-raised);
+  --shadow-neu-sm: var(--neu-raised-sm);
+  --shadow-neu-in: var(--neu-pressed);
+  --shadow-neu-in-sm: var(--neu-pressed-sm);
+  --radius-neu: var(--r-lg);
+  /* Admin-chosen Google Fonts override the bundled pair */
+  --font-display: var(--site-font-serif, var(--font-jakarta));
+  --font-serif: var(--site-font-serif, var(--font-jakarta));
+  --font-sans: var(--site-font-sans, var(--font-inter));
+  --font-mono: var(--font-jetbrains);
+}
+
+/* ---------------------------------------------------------------------------
+   Surfaces. Tailwind utilities (rounded-*, padding) still win over these.
+   ------------------------------------------------------------------------- */
+@layer components {
+  .neu {
+    background: var(--surface);
+    box-shadow: var(--neu-raised);
+    border-radius: var(--r-lg);
+  }
+  .neu-sm {
+    background: var(--surface);
+    box-shadow: var(--neu-raised-sm);
+    border-radius: var(--r-sm);
+  }
+  .neu-in {
+    background: var(--surface);
+    box-shadow: var(--neu-pressed);
+    border-radius: var(--r-md);
+  }
+  .neu-in-sm {
+    background: var(--surface);
+    box-shadow: var(--neu-pressed-sm);
+    border-radius: var(--r-sm);
+  }
+  .neu-concave {
+    background: var(--surface);
+    box-shadow: var(--neu-concave);
+  }
+
+  /* Anything clickable: lifts on hover, sinks in when pressed */
+  .neu-interactive {
+    transition:
+      box-shadow 200ms ease,
+      transform 200ms ease,
+      color 200ms ease;
+  }
+  .neu-interactive:hover {
+    transform: translateY(-2px);
+  }
+  .neu-interactive:active {
+    box-shadow: var(--neu-pressed-sm);
+    transform: translateY(0);
+  }
+  .neu.neu-interactive:hover {
+    box-shadow: var(--neu-raised-hover);
+  }
+  .neu.neu-interactive:active {
+    box-shadow: var(--neu-pressed);
+  }
+
+  /* Primary action: accent fill so it reads as a button without the shadows */
+  .neu-primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: #fff;
+    box-shadow:
+      var(--neu-raised-sm),
+      inset 1px 1px 0 rgb(255 255 255 / 0.25);
+  }
+  .neu-primary:active {
+    box-shadow:
+      inset 3px 3px 6px rgb(0 0 0 / 0.25),
+      inset -2px -2px 5px rgb(255 255 255 / 0.15);
+  }
+
+  .text-grad {
+    background: linear-gradient(100deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  /* Legacy surface names (admin bar, login, maintenance) mapped onto neumorphism */
+  .ui-raised {
+    background: var(--surface);
+    box-shadow: var(--neu-raised);
+  }
+  .ui-inset {
+    background: var(--surface);
+    box-shadow: var(--neu-pressed-sm);
+  }
+  .ui-float {
+    background: var(--surface);
+    box-shadow: var(--neu-raised);
+  }
+  .ui-solid {
+    box-shadow: var(--neu-raised-sm);
+  }
+  .ui-press {
+    transition:
+      box-shadow 200ms ease,
+      transform 200ms ease,
+      color 200ms ease;
+  }
+  .ui-press:active {
+    box-shadow: var(--neu-pressed-sm);
+    transform: translateY(1px);
+  }
 }
 
 html {
@@ -288,10 +218,8 @@ h3 {
 }
 
 body {
-  /* Glass paints a fixed colourful backdrop behind the frosted panes; other styles: plain colour */
-  background: var(--s-backdrop), var(--bg);
-  background-attachment: fixed;
-  color: var(--fg);
+  background: var(--bg);
+  color: var(--text);
   transition:
     background-color 0.4s ease,
     color 0.4s ease;
@@ -299,134 +227,12 @@ body {
 
 ::selection {
   background: var(--accent);
-  color: var(--bg);
-}
-
-/* Subtle film grain for a tactile, premium surface */
-.grain::before {
-  content: "";
-  position: fixed;
-  inset: 0;
-  z-index: 60;
-  pointer-events: none;
-  opacity: 0.035;
-  background-image: url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>");
-}
-
-.bg-grid {
-  background-image:
-    linear-gradient(var(--border) 1px, transparent 1px),
-    linear-gradient(90deg, var(--border) 1px, transparent 1px);
-  background-size: 64px 64px;
-  mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, #000 30%, transparent 75%);
-}
-
-.text-gradient {
-  background: linear-gradient(110deg, var(--fg) 20%, var(--accent) 50%, var(--fg) 80%);
-  background-size: 200% auto;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation: shine 8s linear infinite;
-}
-
-/* Zephyr sets its highlight in plain italic ink rather than a shimmering gradient */
-[data-style="zephyr"] .text-gradient {
-  background: none;
-  color: inherit;
-  animation: none;
-}
-
-@keyframes shine {
-  to {
-    background-position: 200% center;
-  }
-}
-
-@keyframes marquee {
-  to {
-    transform: translateX(-50%);
-  }
-}
-
-.animate-marquee {
-  animation: marquee 40s linear infinite;
-}
-.animate-marquee:hover {
-  animation-play-state: paused;
-}
-
-/* Cursor spotlight on cards (TiltCard sets --mx / --my); sits under the content */
-.spotlight {
-  position: relative;
-  isolation: isolate;
-}
-.spotlight::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  border-radius: inherit;
-  pointer-events: none;
-  opacity: 0;
-  background: radial-gradient(
-    28rem circle at var(--mx, 50%) var(--my, 50%),
-    color-mix(in srgb, var(--accent) 16%, transparent),
-    transparent 45%
-  );
-  transition: opacity 0.4s ease;
-}
-.spotlight:hover::before {
-  opacity: 1;
-}
-
-/* Slow-drifting light behind the hero */
-.aurora {
-  position: absolute;
-  border-radius: 9999px;
-  filter: blur(80px);
-  pointer-events: none;
-  will-change: transform;
-}
-.aurora-a {
-  animation: drift-a 22s ease-in-out infinite alternate;
-}
-.aurora-b {
-  animation: drift-b 28s ease-in-out infinite alternate;
-}
-@keyframes drift-a {
-  to {
-    transform: translate3d(12vw, 8vh, 0) scale(1.15);
-  }
-}
-@keyframes drift-b {
-  to {
-    transform: translate3d(-10vw, -6vh, 0) scale(0.9);
-  }
-}
-
-/* Gradient sheen that sweeps across a solid button on hover */
-.sheen {
-  position: relative;
-  overflow: hidden;
-  isolation: isolate;
-}
-.sheen::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: linear-gradient(110deg, transparent 30%, rgb(255 255 255 / 0.28) 50%, transparent 70%);
-  transform: translateX(-120%);
-  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
-}
-.sheen:hover::after {
-  transform: translateX(120%);
+  color: #fff;
 }
 
 :focus-visible {
   outline: 2px solid var(--accent);
-  outline-offset: 3px;
+  outline-offset: 4px;
 }
 
 h1,
@@ -434,24 +240,62 @@ h2 {
   text-wrap: balance;
 }
 
-.no-animations .text-gradient,
-.no-animations .animate-marquee,
-.no-animations .animate-bounce,
-.no-animations .animate-ping,
-.no-animations .aurora {
-  animation: none;
+/* ---------------------------------------------------------------------------
+   Motion
+   ------------------------------------------------------------------------- */
+@keyframes marquee {
+  to {
+    transform: translateX(-50%);
+  }
 }
-.no-animations .sheen::after {
-  display: none;
+.animate-marquee {
+  animation: marquee 40s linear infinite;
+}
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Hero stat bubbles bob gently around the photo orb */
+@keyframes float {
+  50% {
+    transform: translateY(-10px);
+  }
+}
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes pulse-dot {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, var(--success) 60%, transparent);
+  }
+  100% {
+    box-shadow: 0 0 0 8px transparent;
+  }
+}
+.animate-pulse-dot {
+  animation: pulse-dot 1.8s ease-out infinite;
+}
+
+.no-animations .animate-marquee,
+.no-animations .animate-float,
+.no-animations .animate-pulse-dot,
+.no-animations .animate-bounce,
+.no-animations .animate-ping {
+  animation: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
   }
-  .text-gradient,
   .animate-marquee,
-  .aurora {
+  .animate-float,
+  .animate-pulse-dot,
+  .animate-bounce {
     animation: none;
+  }
+  .neu-interactive:hover {
+    transform: none;
   }
 }
