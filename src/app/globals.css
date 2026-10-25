@@ -1,6 +1,8 @@
 @import "tailwindcss";
 
 @custom-variant dark (&:where(.dark, .dark *));
+/* Layout tweaks that only apply in the Zephyr design style (zephyr:hidden, zephyr:uppercase, …) */
+@custom-variant zephyr (&:where([data-style="zephyr"], [data-style="zephyr"] *));
 
 :root {
   --bg: #faf8f4;
