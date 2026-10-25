@@ -144,6 +144,16 @@ function useAppearance(settings: SiteSettings, name: string) {
       (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
     root.classList.toggle("dark", dark);
 
+    // Design style: the configured one, unless the switcher is on and the visitor picked another.
+    let style: DesignStyle = settings.designStyle || "neumorphism";
+    if (settings.enableStyleSwitcher) {
+      try {
+        const saved = localStorage.getItem(STYLE_KEY) as DesignStyle | null;
+        if (saved && DESIGN_STYLES.includes(saved)) style = saved;
+      } catch {}
+    }
+    root.dataset.style = style;
+
     root.style.setProperty("--site-font-size", `${settings.baseFontSize || 16}px`);
     root.style.setProperty("--heading-scale", String((settings.headingScale || 100) / 100));
     root.style.setProperty("--accent-light", settings.accentLight || "#a87a32");
