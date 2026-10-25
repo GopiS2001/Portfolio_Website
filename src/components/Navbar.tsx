@@ -82,6 +82,7 @@ export function Navbar() {
         </ul>
 
         <div className="flex items-center gap-2">
+          {settings.enableStyleSwitcher && <StyleSwitcher />}
           {settings.enableThemeToggle && <ThemeToggle />}
           {settings.showHeaderCta && contactVisible && (
             <a
