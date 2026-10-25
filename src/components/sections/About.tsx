@@ -1,60 +1,47 @@
 "use client";
 
+import { Gauge, Layers, Palette, Sparkles, Users, type LucideIcon } from "lucide-react";
+import { NeuAvatar, NeuCard } from "../neu";
 import { Reveal } from "../Reveal";
 import { Section } from "../Section";
 import { useSite } from "../SiteProvider";
 
+// Highlight titles are free text in the dashboard; pick an icon by keyword, else a sparkle
+const TRAIT_ICONS: [RegExp, LucideIcon][] = [
+  [/design/i, Palette],
+  [/perform|speed|fast/i, Gauge],
+  [/end|full|stack/i, Layers],
+  [/collab|team|commun/i, Users],
+];
+const traitIcon = (title: string) => TRAIT_ICONS.find(([re]) => re.test(title))?.[1] ?? Sparkles;
+
 export function About() {
   const { profile, about } = useSite().data;
-  const initials = profile.name
-    .split(" ")
-    .map((w) => w[0])
-    .join("")
-    .slice(0, 2);
 
   return (
     <Section id="about">
-      <div className="grid gap-12 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-16">
+      <div className="grid items-start gap-14 md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] md:gap-16">
         <Reveal>
-          {/* Portrait card — shows the uploaded avatar, or a monogram */}
-          <div className="relative mx-auto aspect-[4/5] w-full max-w-sm">
-            <div className="absolute -inset-px rounded-[2rem] bg-gradient-to-br from-accent/60 via-transparent to-accent/30" />
-            <div className="relative flex h-full flex-col justify-between overflow-hidden rounded-[2rem] bg-elevated p-8">
-              {profile.avatarUrl ? (
-                <>
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img
-                    src={profile.avatarUrl}
-                    alt={profile.name}
-                    className="absolute inset-0 size-full object-cover"
-                  />
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-                </>
-              ) : (
-                <div
-                  aria-hidden
-                  className="absolute -right-24 -bottom-24 size-72 rounded-full blur-3xl"
-                  style={{ background: "var(--glow)" }}
-                />
-              )}
-              <span
-                className={`relative font-mono text-xs tracking-[0.25em] uppercase ${profile.avatarUrl ? "text-white/80" : "text-subtle"}`}
-              >
+          <div className="relative mx-auto w-full max-w-sm pr-4 pb-6">
+            <NeuAvatar
+              src={profile.avatarUrl}
+              name={profile.name}
+              rounded="rounded-[var(--r-lg)]"
+              className="aspect-[4/5] w-full"
+            />
+            {/* Label card overlapping the corner of the frame */}
+            <div className="neu-sm absolute right-0 bottom-0 rounded-[var(--r-md)] px-5 py-3">
+              <p className="font-mono text-[0.6875rem] tracking-[0.2em] text-subtle uppercase">
                 Portfolio · {new Date().getFullYear()}
-              </span>
-              {!profile.avatarUrl && (
-                <span className="font-serif text-[9rem] leading-none text-accent italic">{initials}</span>
-              )}
-              <div className={`relative ${profile.avatarUrl ? "text-white" : ""}`}>
-                <p className="font-serif text-3xl">{profile.name}</p>
-                <p className={`text-sm ${profile.avatarUrl ? "text-white/75" : "text-muted"}`}>{profile.role}</p>
-              </div>
+              </p>
+              <p className="mt-0.5 font-display font-semibold">{profile.name}</p>
+              <p className="text-xs text-muted">{profile.role}</p>
             </div>
           </div>
         </Reveal>
 
         <div>
-          <div className="space-y-5 text-lg leading-relaxed text-muted">
+          <div className="space-y-5 text-base leading-relaxed text-muted sm:text-[1.0625rem]">
             {about.paragraphs.map((p, i) => (
               <Reveal key={i} delay={i * 0.08}>
                 <p className={i === 0 ? "text-fg" : undefined}>{p}</p>
@@ -63,16 +50,24 @@ export function About() {
           </div>
 
           {about.highlights.length > 0 && (
-            <div className="mt-10 grid gap-3 sm:grid-cols-2">
-              {about.highlights.map((h, i) => (
-                <Reveal key={h.id} delay={0.1 + i * 0.06}>
-                  <div className="h-full rounded-2xl border border-line bg-card p-5 backdrop-blur transition hover:border-accent/40">
-                    <p className="font-medium">{h.title}</p>
-                    <p className="mt-1 text-sm text-muted">{h.text}</p>
-                  </div>
-                </Reveal>
-              ))}
-            </div>
+            <ul className="mt-10 grid gap-5 sm:grid-cols-2">
+              {about.highlights.map((h, i) => {
+                const Icon = traitIcon(h.title);
+                return (
+                  <Reveal key={h.id} delay={0.1 + i * 0.06} className="h-full">
+                    <NeuCard as="li" className="flex h-full items-start gap-4 p-5">
+                      <span className="neu-in-sm grid size-12 shrink-0 place-items-center rounded-full text-accent-ink">
+                        <Icon aria-hidden className="size-5" />
+                      </span>
+                      <div>
+                        <h3 className="font-display font-semibold">{h.title}</h3>
+                        <p className="mt-1 text-sm text-muted">{h.text}</p>
+                      </div>
+                    </NeuCard>
+                  </Reveal>
+                );
+              })}
+            </ul>
           )}
         </div>
       </div>
