@@ -25,6 +25,20 @@ const instrumentSerif = Instrument_Serif({
   style: ["normal", "italic"],
 });
 
+// Zephyr design style's pair; not preloaded, so other styles never download them
+const dmSans = DM_Sans({
+  variable: "--font-dm-sans",
+  subsets: ["latin"],
+  preload: false,
+});
+
+const playfair = Playfair_Display({
+  variable: "--font-playfair",
+  subsets: ["latin"],
+  style: ["normal", "italic"],
+  preload: false,
+});
+
 export const metadata: Metadata = {
   title: site.settings.siteTitle || `${site.profile.name} — ${site.profile.role}`,
   description: site.settings.metaDescription || site.profile.tagline || undefined,
