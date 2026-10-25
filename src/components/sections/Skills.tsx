@@ -19,6 +19,10 @@ import {
   Wrench,
   type LucideIcon,
 } from "lucide-react";
+import { motion } from "motion/react";
+import type { SiteData } from "@/lib/site-types";
+import { NeuCard, NeuChip } from "../neu";
+import { EASE } from "../motion";
 import { Reveal } from "../Reveal";
 import { Section } from "../Section";
 import { useSite } from "../SiteProvider";
@@ -43,67 +47,79 @@ const icons: Record<string, LucideIcon> = {
   sparkles: Sparkles,
 };
 
+/** A skill listed in more than one group (or twice with different casing) shows only the first time. */
+function dedupe(groups: SiteData["skills"]["groups"]) {
+  const seen = new Set<string>();
+  return groups
+    .map((g) => ({
+      ...g,
+      skills: g.skills.filter((skill) => {
+        const key = skill.trim().toLowerCase();
+        if (!key || seen.has(key)) return false;
+        seen.add(key);
+        return true;
+      }),
+    }))
+    .filter((g) => g.skills.length > 0);
+}
+
 export function Skills() {
   const { skills, settings } = useSite().data;
+  const groups = dedupe(skills.groups);
   const marquee = skills.marquee;
+  // Bento: the first two groups stand tall when there are enough cards around them
+  const bento = groups.length >= 4;
 
   return (
     <Section id="skills">
-      <div className="grid gap-4 sm:grid-cols-2">
-        {skills.groups.map((group, i) => {
+      <div className="grid gap-6 sm:grid-cols-2 lg:grid-flow-dense lg:grid-cols-3">
+        {groups.map((group, i) => {
           const Icon = icons[group.icon] ?? LayoutTemplate;
           return (
-            <Reveal key={group.id} delay={i * 0.08}>
-              <div className="group relative h-full overflow-hidden rounded-3xl border border-line bg-card p-7 backdrop-blur transition duration-500 hover:-translate-y-1 hover:border-accent/40">
-                <div
-                  aria-hidden
-                  className="absolute -top-20 -right-20 size-48 rounded-full opacity-0 blur-3xl transition duration-700 group-hover:opacity-100"
-                  style={{ background: "var(--glow)" }}
-                />
-                <div className="relative flex items-center gap-4">
-                  <span className="grid size-12 place-items-center rounded-2xl bg-accent-soft text-accent">
-                    <Icon className="size-5" />
-                  </span>
-                  <h3 className="font-serif text-3xl">{group.title}</h3>
-                  <span className="ml-auto font-mono text-xs text-subtle">
+            <Reveal key={group.id} delay={(i % 3) * 0.08} className={bento && i < 2 ? "lg:row-span-2" : undefined}>
+              <NeuCard as="article" className="flex h-full flex-col p-6 sm:p-7">
+                <div className="flex items-center gap-4">
+                  <span className="neu-in-sm grid size-12 shrink-0 place-items-center rounded-full font-mono text-sm text-accent-ink">
                     {String(i + 1).padStart(2, "0")}
                   </span>
+                  <h3 className="font-display text-lg leading-snug font-semibold sm:text-xl">{group.title}</h3>
+                  <Icon aria-hidden className="ml-auto size-5 shrink-0 text-subtle" />
                 </div>
-                <ul className="relative mt-6 flex flex-wrap gap-2">
-                  {group.skills.map((skill) => (
-                    <li
+                <ul className="mt-6 flex flex-wrap gap-2.5">
+                  {group.skills.map((skill, j) => (
+                    <motion.li
                       key={skill}
-                      className="rounded-full border border-line px-3.5 py-1.5 text-sm text-muted transition group-hover:text-fg"
+                      initial={{ opacity: 0, y: 8 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.45, delay: 0.2 + j * 0.03, ease: EASE }}
                     >
-                      {skill}
-                    </li>
+                      <NeuChip>{skill}</NeuChip>
+                    </motion.li>
                   ))}
                 </ul>
-              </div>
+              </NeuCard>
             </Reveal>
           );
         })}
       </div>
 
-      {/* Infinite tech marquee */}
+      {/* Infinite tech marquee running through a pressed track */}
       {settings.showMarquee && marquee.length > 0 && (
-        <div
-          className="relative mt-16 overflow-hidden"
-          style={{ maskImage: "linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent)" }}
-        >
-          <div className="animate-marquee flex w-max gap-12">
-            {[...marquee, ...marquee].map((item, i) => (
-              <span
-                key={i}
-                aria-hidden={i >= marquee.length}
-                className="flex items-center gap-12 font-serif text-4xl whitespace-nowrap text-subtle italic"
-              >
-                {item}
-                <span className="text-accent not-italic">✦</span>
-              </span>
-            ))}
+        <Reveal className="mt-14">
+          <div
+            className="neu-in overflow-hidden rounded-full py-4"
+            style={{ maskImage: "linear-gradient(90deg, transparent, #000 8%, #000 92%, transparent)" }}
+          >
+            <ul className="animate-marquee flex w-max gap-4 pr-4">
+              {[...marquee, ...marquee].map((item, i) => (
+                <li key={i} aria-hidden={i >= marquee.length}>
+                  <NeuChip className="px-5 py-2 text-sm text-fg">{item}</NeuChip>
+                </li>
+              ))}
+            </ul>
           </div>
-        </div>
+        </Reveal>
       )}
     </Section>
   );
