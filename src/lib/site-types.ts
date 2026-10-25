@@ -15,6 +15,10 @@ export type SiteSettings = {
   defaultTheme: ThemeMode;
   accentLight: string;
   accentDark: string;
+  /** Surface look; older snapshots may not have it yet. */
+  designStyle?: DesignStyle;
+  /** Visitors can try the other styles from the header. */
+  enableStyleSwitcher?: boolean;
   fontSans: string;
   fontSerif: string;
   baseFontSize: number;
