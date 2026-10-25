@@ -33,8 +33,9 @@ export function cleanUrl(raw: string | null | undefined): string {
   const withScheme = /^https?:\/\//i.test(value) ? value : `https://${value}`;
   try {
     const url = new URL(withScheme);
+    const social = SOCIAL_HOST.test(url.hostname);
     for (const key of [...url.searchParams.keys()]) {
-      if (TRACKING.test(key)) url.searchParams.delete(key);
+      if (TRACKING.test(key) || (social && SOCIAL_TRACKING.test(key))) url.searchParams.delete(key);
     }
     return url.toString();
   } catch {
