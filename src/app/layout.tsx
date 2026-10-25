@@ -2,7 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, JetBrains_Mono, Plus_Jakarta_Sans } from "next/font/google";
 import snapshot from "@/data/site-snapshot.json";
 import type { SiteData } from "@/lib/site-types";
-import { SITE_URL, cleanUrl, socialLinks } from "@/lib/links";
+import { SITE_URL, socialLinks } from "@/lib/links";
 import { AdminProvider } from "@/components/AdminProvider";
 import { AdminBar } from "@/components/AdminBar";
 import "./globals.css";
