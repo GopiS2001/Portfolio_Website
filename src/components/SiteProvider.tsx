@@ -127,7 +127,7 @@ function loadFont(family: string, kind: "sans" | "serif") {
   );
 }
 
-/** Pushes Configuration-page settings onto <html>: theme, fonts, sizes, accent colours, title. */
+/** Pushes Configuration-page settings onto <html>: theme, design style, fonts, sizes, accents, title. */
 function useAppearance(settings: SiteSettings, name: string) {
   useEffect(() => {
     const root = document.documentElement;
