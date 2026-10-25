@@ -31,6 +31,183 @@
   color-scheme: dark;
 }
 
+/* ---------------------------------------------------------------------------
+   Design styles — chosen on the admin Configuration page (data-style on <html>), optionally
+   switchable by visitors. Each style sets the page colour and the surface tokens below;
+   components draw cards with .ui-raised, fields / tags / the active nav oval with .ui-inset,
+   and add .ui-press to sink in when clicked. Keep in step with the mobile app's themes.
+     --s-fill / --s-well   raised / pressed-in surface (may be a gradient)
+     --s-raised / --s-inset box-shadows
+     --s-edge / --s-edge-well 1px rims (transparent where the style has none)
+     --s-float            fill for things floating over content (navbar, menus)
+     --s-blur             backdrop-filter (glass)
+   ------------------------------------------------------------------------- */
+
+/* Neumorphism (default): one colour, depth from a highlight + shade pair */
+:root {
+  --bg: #ece8e1;
+  --bg-elevated: #ece8e1;
+  --card: #ece8e1;
+  --s-light: #ffffff;
+  --s-dark: rgb(166 155 138 / 0.55);
+  --s-fill: var(--bg);
+  --s-well: var(--bg);
+  --s-float: color-mix(in srgb, var(--bg) 92%, transparent);
+  --s-raised: 6px 6px 14px var(--s-dark), -6px -6px 14px var(--s-light);
+  --s-raised-sm: 3px 3px 7px var(--s-dark), -3px -3px 7px var(--s-light);
+  --s-inset: inset 4px 4px 9px var(--s-dark), inset -4px -4px 9px var(--s-light);
+  --s-edge: transparent;
+  --s-edge-well: transparent;
+  --s-blur: none;
+  --s-backdrop: none;
+}
+.dark {
+  --bg: #1e1d1b;
+  --bg-elevated: #1e1d1b;
+  --card: #1e1d1b;
+  --s-light: rgb(255 255 255 / 0.05);
+  --s-dark: rgb(0 0 0 / 0.55);
+}
+
+/* Glassmorphism: frosted translucent panes with a bright rim over a colourful backdrop */
+[data-style="glassmorphism"] {
+  --bg: #dcd6f7;
+  --bg-elevated: rgb(255 255 255 / 0.55);
+  --card: rgb(255 255 255 / 0.35);
+  --s-fill: rgb(255 255 255 / 0.32);
+  --s-well: rgb(255 255 255 / 0.2);
+  --s-float: rgb(255 255 255 / 0.45);
+  --s-raised: 0 8px 32px rgb(31 38 135 / 0.14), inset 0 1px 0 rgb(255 255 255 / 0.7);
+  --s-raised-sm: 0 4px 14px rgb(31 38 135 / 0.14), inset 0 1px 0 rgb(255 255 255 / 0.7);
+  --s-inset: inset 0 2px 8px rgb(31 38 135 / 0.12);
+  --s-edge: rgb(255 255 255 / 0.65);
+  --s-edge-well: rgb(255 255 255 / 0.45);
+  --s-blur: blur(16px) saturate(160%);
+  --s-backdrop:
+    radial-gradient(38rem 38rem at 88% -6%, #fbc2eb 0, transparent 62%),
+    radial-gradient(42rem 42rem at -8% 64%, #a1c4fd 0, transparent 62%),
+    linear-gradient(135deg, #c2e9fb, #e0c3fc);
+}
+.dark[data-style="glassmorphism"] {
+  --bg: #120f2e;
+  --bg-elevated: rgb(255 255 255 / 0.08);
+  --card: rgb(255 255 255 / 0.06);
+  --s-fill: rgb(255 255 255 / 0.06);
+  --s-well: rgb(0 0 0 / 0.22);
+  --s-float: rgb(20 16 48 / 0.55);
+  --s-raised: 0 8px 32px rgb(0 0 0 / 0.35), inset 0 1px 0 rgb(255 255 255 / 0.12);
+  --s-raised-sm: 0 4px 14px rgb(0 0 0 / 0.35), inset 0 1px 0 rgb(255 255 255 / 0.12);
+  --s-inset: inset 0 2px 8px rgb(0 0 0 / 0.35);
+  --s-edge: rgb(255 255 255 / 0.16);
+  --s-edge-well: rgb(255 255 255 / 0.08);
+  --s-backdrop:
+    radial-gradient(38rem 38rem at 88% -6%, #0e5e6f 0, transparent 62%),
+    radial-gradient(42rem 42rem at -8% 64%, #3a1c71 0, transparent 62%),
+    linear-gradient(135deg, #0b1026, #2a1a5e);
+}
+
+/* Claymorphism: puffy pastel clay — soft drop shadow plus inner highlight and inner shade */
+[data-style="claymorphism"] {
+  --bg: #f3ede4;
+  --bg-elevated: #fdfaf5;
+  --card: #fdfaf5;
+  --s-fill: #fdfaf5;
+  --s-well: #ebe3d6;
+  --s-float: rgb(253 250 245 / 0.92);
+  --s-raised:
+    10px 14px 28px rgb(150 120 80 / 0.25), inset -5px -5px 10px rgb(150 120 80 / 0.16),
+    inset 5px 5px 10px rgb(255 255 255 / 0.9);
+  --s-raised-sm:
+    5px 7px 14px rgb(150 120 80 / 0.25), inset -3px -3px 6px rgb(150 120 80 / 0.16),
+    inset 3px 3px 6px rgb(255 255 255 / 0.9);
+  --s-inset: inset 5px 5px 10px rgb(150 120 80 / 0.25), inset -5px -5px 10px rgb(255 255 255 / 0.85);
+}
+.dark[data-style="claymorphism"] {
+  --bg: #221e1a;
+  --bg-elevated: #332d27;
+  --card: #332d27;
+  --s-fill: #332d27;
+  --s-well: #1b1814;
+  --s-float: rgb(51 45 39 / 0.92);
+  --s-raised:
+    10px 14px 28px rgb(0 0 0 / 0.55), inset -5px -5px 10px rgb(0 0 0 / 0.35),
+    inset 5px 5px 10px rgb(255 255 255 / 0.08);
+  --s-raised-sm:
+    5px 7px 14px rgb(0 0 0 / 0.55), inset -3px -3px 6px rgb(0 0 0 / 0.35),
+    inset 3px 3px 6px rgb(255 255 255 / 0.08);
+  --s-inset: inset 5px 5px 10px rgb(0 0 0 / 0.5), inset -5px -5px 10px rgb(255 255 255 / 0.06);
+}
+
+/* Skeuomorphism: tactile real materials — paper / leather tones, sheen, crisp edges, drop shadows */
+[data-style="skeuomorphism"] {
+  --bg: #d9d4ca;
+  --bg-elevated: #f4f1ea;
+  --card: #f4f1ea;
+  --s-fill: linear-gradient(#fbf9f4, #ebe6dc);
+  --s-well: #e2dcd0;
+  --s-float: linear-gradient(rgb(251 249 244 / 0.96), rgb(235 230 220 / 0.96));
+  --s-raised:
+    inset 0 1px 0 rgb(255 255 255 / 0.95), 0 1px 1px rgb(0 0 0 / 0.18), 0 4px 10px rgb(40 30 15 / 0.25);
+  --s-raised-sm: inset 0 1px 0 rgb(255 255 255 / 0.95), 0 1px 1px rgb(0 0 0 / 0.2), 0 2px 5px rgb(40 30 15 / 0.22);
+  --s-inset: inset 0 2px 5px rgb(40 30 15 / 0.3), 0 1px 0 rgb(255 255 255 / 0.8);
+  --s-edge: rgb(60 48 30 / 0.3);
+  --s-edge-well: rgb(60 48 30 / 0.32);
+}
+.dark[data-style="skeuomorphism"] {
+  --bg: #1b1a18;
+  --bg-elevated: #3a3834;
+  --card: #3a3834;
+  --s-fill: linear-gradient(#46433e, #33312d);
+  --s-well: #252421;
+  --s-float: linear-gradient(rgb(70 67 62 / 0.96), rgb(51 49 45 / 0.96));
+  --s-raised:
+    inset 0 1px 0 rgb(255 255 255 / 0.12), 0 1px 1px rgb(0 0 0 / 0.5), 0 4px 10px rgb(0 0 0 / 0.55);
+  --s-raised-sm: inset 0 1px 0 rgb(255 255 255 / 0.12), 0 1px 1px rgb(0 0 0 / 0.5), 0 2px 5px rgb(0 0 0 / 0.5);
+  --s-inset: inset 0 2px 5px rgb(0 0 0 / 0.6), 0 1px 0 rgb(255 255 255 / 0.08);
+  --s-edge: rgb(0 0 0 / 0.65);
+  --s-edge-well: rgb(0 0 0 / 0.6);
+}
+
+/* Components layer: Tailwind utilities (hover:border-accent/40, rounded-*, padding) still win */
+@layer components {
+  .ui-raised {
+    background: var(--s-fill);
+    box-shadow: var(--s-raised);
+    border: 1px solid var(--s-edge);
+    -webkit-backdrop-filter: var(--s-blur);
+    backdrop-filter: var(--s-blur);
+  }
+  .ui-inset {
+    background: var(--s-well);
+    box-shadow: var(--s-inset);
+    border: 1px solid var(--s-edge-well);
+  }
+  /* Navbar when scrolled, menus, the admin bar: mostly opaque so text underneath doesn't clash */
+  .ui-float {
+    background: var(--s-float);
+    box-shadow: var(--s-raised);
+    border: 1px solid var(--s-edge);
+    -webkit-backdrop-filter: blur(18px) saturate(160%);
+    backdrop-filter: blur(18px) saturate(160%);
+  }
+  /* Solid accent / ink buttons keep their colour and gain the style's depth */
+  .ui-solid {
+    box-shadow: var(--s-raised-sm);
+  }
+  .ui-press {
+    transition:
+      box-shadow 0.18s ease,
+      transform 0.18s ease,
+      background-color 0.3s ease,
+      border-color 0.3s ease,
+      color 0.3s ease;
+  }
+  .ui-press:active {
+    box-shadow: var(--s-inset);
+    transform: translateY(1px);
+  }
+}
+
 @theme inline {
   --color-bg: var(--bg);
   --color-elevated: var(--bg-elevated);
