@@ -50,7 +50,7 @@ export function Navbar() {
       <nav
         className={`mx-auto flex max-w-6xl items-center justify-between rounded-full border px-3 py-2 pl-5 transition-all duration-500 ${
           scrolled
-            ? "border-line bg-bg/70 shadow-[0_8px_30px_-12px_rgb(0_0_0/0.25)] backdrop-blur-xl"
+            ? "ui-float"
             : "border-transparent"
         }`}
       >
@@ -61,7 +61,10 @@ export function Navbar() {
 
         <ul className="hidden items-center gap-1 md:flex">
           {navLinks.map((link) => (
-            <li key={link.id}>
+            <li
+              key={link.id}
+              className="zephyr:flex zephyr:items-center zephyr:not-first:before:mr-1 zephyr:not-first:before:text-subtle zephyr:not-first:before:content-['·']"
+            >
               <a
                 href={`#${link.id}`}
                 className={`relative rounded-full px-4 py-2 text-sm transition-colors ${
@@ -71,7 +74,7 @@ export function Navbar() {
                 {active === link.id && (
                   <motion.span
                     layoutId="nav-pill"
-                    className="absolute inset-0 -z-10 rounded-full border border-line bg-card"
+                    className="ui-inset absolute inset-0 -z-10 rounded-full"
                     transition={{ type: "spring", stiffness: 380, damping: 32 }}
                   />
                 )}
@@ -87,7 +90,7 @@ export function Navbar() {
           {settings.showHeaderCta && contactVisible && (
             <a
               href="#contact"
-              className="hidden rounded-full bg-fg px-5 py-2.5 text-sm font-medium text-bg transition hover:opacity-85 sm:inline-block"
+              className="ui-solid ui-press hidden rounded-full bg-fg px-5 py-2.5 text-sm font-medium text-bg hover:opacity-85 sm:inline-block"
             >
               {settings.headerCtaLabel}
             </a>
@@ -98,7 +101,7 @@ export function Navbar() {
               onClick={() => setOpen((o) => !o)}
               aria-label="Toggle menu"
               aria-expanded={open}
-              className="grid size-10 place-items-center rounded-full border border-line bg-card md:hidden"
+              className="ui-raised ui-press grid size-10 place-items-center rounded-full md:hidden"
             >
               {open ? <X className="size-[18px]" /> : <Menu className="size-[18px]" />}
             </button>
@@ -113,15 +116,15 @@ export function Navbar() {
             animate={{ opacity: 1, y: 0, scale: 1 }}
             exit={{ opacity: 0, y: -8, scale: 0.98 }}
             transition={{ duration: 0.2 }}
-            className="mx-auto mt-2 flex max-w-6xl flex-col rounded-3xl border border-line bg-bg/90 p-2 backdrop-blur-xl md:hidden"
+            className="mx-auto mt-2 flex max-w-6xl flex-col ui-float rounded-3xl p-2 md:hidden"
           >
             {navLinks.map((link) => (
               <li key={link.id}>
                 <a
                   href={`#${link.id}`}
                   onClick={() => setOpen(false)}
-                  className={`block rounded-2xl px-4 py-3 text-sm ${
-                    active === link.id ? "bg-card text-fg" : "text-muted"
+                  className={`block rounded-full border border-transparent px-4 py-3 text-sm ${
+                    active === link.id ? "ui-inset text-fg" : "text-muted"
                   }`}
                 >
                   {link.label}
