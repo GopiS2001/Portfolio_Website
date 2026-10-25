@@ -1,6 +1,6 @@
 "use client";
 
-import { ArrowDown, ArrowUpRight, MapPin } from "lucide-react";
+import { ArrowDown, ArrowUpRight, MapPin, Zap } from "lucide-react";
 import { Reveal } from "../Reveal";
 import { useSite } from "../SiteProvider";
 
@@ -26,7 +26,7 @@ export function Hero() {
         <Reveal>
           <div className="mb-8 flex flex-wrap items-center gap-3">
             {profile.available && (
-              <span className="inline-flex items-center gap-2 rounded-full border border-line bg-card px-4 py-1.5 text-xs text-muted backdrop-blur">
+              <span className="ui-raised inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs text-muted">
                 <span className="relative flex size-2">
                   <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-60" />
                   <span className="relative inline-flex size-2 rounded-full bg-emerald-500" />
@@ -65,7 +65,7 @@ export function Hero() {
               {projectsVisible && (
                 <a
                   href="#projects"
-                  className="group inline-flex items-center gap-2 rounded-full bg-fg px-7 py-3.5 text-sm font-medium text-bg transition hover:opacity-90"
+                  className="group inline-flex items-center gap-2 ui-solid ui-press rounded-full bg-fg px-7 py-3.5 text-sm font-medium text-bg hover:opacity-90"
                 >
                   {profile.primaryCtaLabel}
                   <ArrowUpRight className="size-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
@@ -76,7 +76,7 @@ export function Hero() {
                   href={profile.resumeUrl}
                   target={profile.resumeUrl.startsWith("http") ? "_blank" : undefined}
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 rounded-full border border-line bg-card px-7 py-3.5 text-sm font-medium backdrop-blur transition hover:border-accent/60"
+                  className="ui-raised ui-press inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium hover:border-accent/60"
                 >
                   {profile.resumeCtaLabel}
                 </a>
@@ -103,7 +103,7 @@ export function Hero() {
           <a
             href={`#${next.key}`}
             aria-label={`Scroll to ${next.navLabel || next.key}`}
-            className="absolute right-6 bottom-0 hidden size-12 place-items-center rounded-full border border-line text-muted transition hover:text-fg md:grid"
+            className="absolute right-6 bottom-0 hidden ui-raised ui-press size-12 place-items-center rounded-full text-muted hover:text-fg md:grid"
           >
             <ArrowDown className="size-4 animate-bounce" />
           </a>
