@@ -80,7 +80,7 @@ export function Hero() {
                   href={profile.resumeUrl}
                   target={profile.resumeUrl.startsWith("http") ? "_blank" : undefined}
                   rel="noreferrer"
-                  className="ui-raised ui-press inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium hover:border-accent/60"
+                  className="ui-raised ui-press inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium hover:border-accent/60 zephyr:py-3 zephyr:text-xs zephyr:tracking-[0.14em] zephyr:uppercase"
                 >
                   {profile.resumeCtaLabel}
                 </a>
