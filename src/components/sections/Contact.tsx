@@ -1,35 +1,53 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
-import { ArrowUpRight, Check, Copy, Loader2, Mail, MapPin, Phone } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
+import { Check, CheckCircle2, Copy, Loader2, Mail, MapPin, Phone, Send } from "lucide-react";
 import { apiUrl } from "@/lib/api";
-import { whatsappHref } from "@/lib/links";
+import { cleanUrl, whatsappHref } from "@/lib/links";
+import { NeuButton, NeuCard, NeuIconButton, NeuInput, NeuTextarea } from "../neu";
 import { Reveal } from "../Reveal";
 import { Section } from "../Section";
 import { InstagramIcon, WhatsappIcon } from "../SocialIcons";
 import { useSite } from "../SiteProvider";
 
-const field =
-  "w-full rounded-2xl border border-line bg-bg/50 px-5 py-4 text-fg placeholder:text-subtle outline-none transition focus:border-accent focus:ring-4 focus:ring-accent-soft";
-
 type Status = "idle" | "sending" | "sent";
+type Fields = { name: string; email: string; message: string };
+type Errors = Partial<Record<keyof Fields, string>>;
+
+const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+
+function validate({ name, email, message }: Fields): Errors {
+  const errors: Errors = {};
+  if (name.trim().length < 2) errors.name = "Please enter your name.";
+  if (!EMAIL.test(email.trim())) errors.email = "Please enter a valid email address.";
+  if (message.trim().length < 10) errors.message = "Tell me a little more — at least 10 characters.";
+  return errors;
+}
 
 export function Contact() {
   const { profile, settings } = useSite().data;
   const [copied, setCopied] = useState(false);
   const [status, setStatus] = useState<Status>("idle");
+  const [errors, setErrors] = useState<Errors>({});
 
   // Save the message to the dashboard inbox; if the API is down, hand it to the visitor's email app.
   const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const form = e.currentTarget;
-    const data = Object.fromEntries(new FormData(form)) as Record<string, string>;
+    const data = Object.fromEntries(new FormData(form)) as Fields;
+    const found = validate(data);
+    setErrors(found);
+    if (Object.keys(found).length > 0) {
+      form.querySelector<HTMLElement>("[aria-invalid=true]")?.focus();
+      return;
+    }
     setStatus("sending");
     try {
       const res = await fetch(apiUrl("/messages"), {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: data.name, email: data.email, message: data.message }),
+        body: JSON.stringify({ name: data.name.trim(), email: data.email.trim(), message: data.message.trim() }),
         signal: AbortSignal.timeout(8000),
       });
       if (!res.ok) throw new Error(String(res.status));
@@ -45,6 +63,15 @@ export function Contact() {
     }
   };
 
+  // Clear a field's error as soon as it's fixed
+  const onChange = (e: FormEvent<HTMLFormElement>) => {
+    const target = e.target as HTMLInputElement;
+    const key = target.name as keyof Fields;
+    if (!errors[key]) return;
+    const data = Object.fromEntries(new FormData(e.currentTarget)) as Fields;
+    if (!validate(data)[key]) setErrors((prev) => ({ ...prev, [key]: undefined }));
+  };
+
   const copyEmail = async () => {
     try {
       await navigator.clipboard.writeText(profile.email);
@@ -53,13 +80,11 @@ export function Contact() {
     } catch {}
   };
 
-  const instagramHandle = profile.instagram
-    .replace(/\/$/, "")
-    .split("/")
-    .pop();
+  const instagram = cleanUrl(profile.instagram);
+  const instagramHandle = instagram ? new URL(instagram).pathname.replace(/\//g, "") : "";
 
   const details = [
-    profile.email && { icon: Mail, label: "Email", value: profile.email, href: `mailto:${profile.email}` },
+    profile.email && { icon: Mail, label: "Email", value: profile.email, href: `mailto:${profile.email}`, copy: true },
     profile.phone && {
       icon: Phone,
       label: "Phone",
@@ -73,11 +98,11 @@ export function Contact() {
       href: whatsappHref(profile.whatsapp),
       external: true,
     },
-    profile.instagram && {
+    instagram && {
       icon: InstagramIcon,
       label: "Instagram",
-      value: instagramHandle ? `@${instagramHandle}` : profile.instagram,
-      href: profile.instagram,
+      value: instagramHandle ? `@${instagramHandle}` : instagram,
+      href: instagram,
       external: true,
     },
     profile.location && { icon: MapPin, label: "Location", value: profile.location },
@@ -87,117 +112,116 @@ export function Contact() {
     value: string;
     href?: string;
     external?: boolean;
+    copy?: boolean;
   }[];
 
   return (
     <Section id="contact">
       <div
-        className={`grid gap-8 ${settings.showContactForm ? "md:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]" : "max-w-2xl"}`}
+        className={`grid gap-10 ${settings.showContactForm ? "lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)]" : "max-w-2xl"}`}
       >
         <Reveal>
-          <div className="flex h-full flex-col gap-4">
-            {profile.contactIntro && (
-              <p className="text-lg leading-relaxed text-muted">{profile.contactIntro}</p>
-            )}
-
-            {profile.email && (
-              <button
-                type="button"
-                onClick={copyEmail}
-                className="group mt-4 flex items-center justify-between gap-4 rounded-2xl border border-line bg-card p-5 text-left backdrop-blur transition hover:border-accent/40"
-              >
-                <span className="min-w-0">
-                  <span className="block text-xs tracking-wide text-subtle uppercase">Copy email</span>
-                  <span className="block truncate font-serif text-2xl">{profile.email}</span>
+          {profile.contactIntro && (
+            <p className="text-base leading-relaxed text-muted sm:text-[1.0625rem]">{profile.contactIntro}</p>
+          )}
+          <ul className="mt-8 space-y-5">
+            {details.map(({ icon: Icon, label, value, href, external, copy }) => (
+              <li key={label} className="flex items-center gap-4">
+                <span className="neu-sm grid size-12 shrink-0 place-items-center rounded-full text-accent-ink">
+                  <Icon aria-hidden className="size-5" />
                 </span>
-                {copied ? (
-                  <Check className="size-5 shrink-0 text-emerald-500" />
-                ) : (
-                  <Copy className="size-5 shrink-0 text-muted transition group-hover:text-accent" />
+                <div className="min-w-0 flex-1">
+                  <p className="text-xs font-medium tracking-wide text-subtle uppercase">{label}</p>
+                  {href ? (
+                    <a
+                      href={href}
+                      target={external ? "_blank" : undefined}
+                      rel={external ? "noreferrer" : undefined}
+                      className="block truncate font-medium text-fg transition-colors hover:text-accent-ink"
+                    >
+                      {value}
+                    </a>
+                  ) : (
+                    <p className="truncate font-medium">{value}</p>
+                  )}
+                </div>
+                {copy && (
+                  <NeuIconButton label={copied ? "Email copied" : "Copy email address"} size="sm" onClick={copyEmail}>
+                    {copied ? <Check className="size-4 text-success" /> : <Copy className="size-4" />}
+                  </NeuIconButton>
                 )}
-              </button>
-            )}
-
-            <ul className="space-y-1">
-              {details.map(({ icon: Icon, label, value, href, external }) => (
-                <li key={label}>
-                  <a
-                    href={href}
-                    target={external ? "_blank" : undefined}
-                    rel={external ? "noreferrer" : undefined}
-                    className="flex items-center gap-4 rounded-2xl px-2 py-3 transition hover:bg-card"
-                  >
-                    <span className="grid size-10 place-items-center rounded-xl bg-accent-soft text-accent">
-                      <Icon className="size-4" />
-                    </span>
-                    <span>
-                      <span className="block text-xs text-subtle">{label}</span>
-                      <span className="text-sm">{value}</span>
-                    </span>
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </div>
+              </li>
+            ))}
+          </ul>
         </Reveal>
 
         {settings.showContactForm && (
           <Reveal delay={0.1}>
-            <form
-              onSubmit={onSubmit}
-              className="rounded-3xl border border-line bg-card p-6 backdrop-blur sm:p-8"
-            >
-              <div className="grid gap-4 sm:grid-cols-2">
-                <label className="block">
-                  <span className="mb-2 block text-sm text-muted">Name</span>
-                  <input name="name" required maxLength={120} placeholder="Jane Doe" className={field} />
-                </label>
-                <label className="block">
-                  <span className="mb-2 block text-sm text-muted">Email</span>
-                  <input
-                    name="email"
-                    type="email"
-                    required
-                    maxLength={160}
-                    placeholder="jane@company.com"
-                    className={field}
-                  />
-                </label>
-              </div>
-              <label className="mt-4 block">
-                <span className="mb-2 block text-sm text-muted">Message</span>
-                <textarea
-                  name="message"
-                  required
-                  rows={6}
-                  maxLength={5000}
-                  placeholder="Tell me about your project…"
-                  className={`${field} resize-none`}
+            <NeuCard as="form" onSubmit={onSubmit} onChange={onChange} noValidate className="p-6 sm:p-9">
+              <div className="grid gap-5 sm:grid-cols-2">
+                <NeuInput
+                  name="name"
+                  label="Name"
+                  autoComplete="name"
+                  maxLength={120}
+                  placeholder="Jane Doe"
+                  error={errors.name}
                 />
-              </label>
-              <div className="mt-6 flex flex-wrap items-center gap-4">
-                <button
-                  type="submit"
-                  disabled={status === "sending"}
-                  className="group inline-flex w-full items-center justify-center gap-2 rounded-full bg-fg px-7 py-4 text-sm font-medium text-bg transition hover:opacity-90 disabled:opacity-60 sm:w-auto"
-                >
+                <NeuInput
+                  name="email"
+                  label="Email"
+                  type="email"
+                  autoComplete="email"
+                  maxLength={160}
+                  placeholder="jane@company.com"
+                  error={errors.email}
+                />
+              </div>
+              <NeuTextarea
+                name="message"
+                label="Message"
+                rows={6}
+                maxLength={5000}
+                placeholder="Tell me about your project…"
+                error={errors.message}
+                className="mt-5"
+              />
+              <div className="mt-7 flex flex-wrap items-center gap-4">
+                <NeuButton type="submit" size="lg" disabled={status === "sending"} className="w-full sm:w-auto">
                   {status === "sending" ? "Sending…" : "Send message"}
                   {status === "sending" ? (
-                    <Loader2 className="size-4 animate-spin" />
+                    <Loader2 aria-hidden className="size-4 animate-spin" />
                   ) : (
-                    <ArrowUpRight className="size-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                    <Send aria-hidden className="size-4" />
                   )}
-                </button>
-                {status === "sent" && (
-                  <p role="status" className="flex items-center gap-2 text-sm text-emerald-600 dark:text-emerald-400">
-                    <Check className="size-4" /> Thanks! Your message was sent.
-                  </p>
-                )}
+                </NeuButton>
+                <p role="status" className="text-sm">
+                  {status === "sent" && (
+                    <span className="flex items-center gap-2 font-medium text-success">
+                      <CheckCircle2 aria-hidden className="size-4" /> Thanks! Your message was sent.
+                    </span>
+                  )}
+                </p>
               </div>
-            </form>
+            </NeuCard>
           </Reveal>
         )}
       </div>
+
+      {/* "Copied!" toast */}
+      <AnimatePresence>
+        {copied && (
+          <motion.div
+            role="status"
+            initial={{ opacity: 0, y: 16 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 16 }}
+            className="neu fixed bottom-6 left-1/2 z-50 flex -translate-x-1/2 items-center gap-2 rounded-full px-5 py-3 text-sm font-medium"
+          >
+            <Check aria-hidden className="size-4 text-success" /> Copied!
+          </motion.div>
+        )}
+      </AnimatePresence>
     </Section>
   );
 }
