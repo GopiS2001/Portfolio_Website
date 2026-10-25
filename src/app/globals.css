@@ -268,10 +268,10 @@
   --color-card: var(--card);
   --color-accent: var(--accent);
   --color-accent-soft: var(--accent-soft);
-  /* Admin-chosen Google Fonts override the bundled defaults */
-  --font-sans: var(--site-font-sans, var(--font-geist-sans));
+  /* Admin-chosen Google Fonts override the design style's pair, which overrides the bundled defaults */
+  --font-sans: var(--site-font-sans, var(--style-font-sans, var(--font-geist-sans)));
   --font-mono: var(--font-geist-mono);
-  --font-serif: var(--site-font-serif, var(--font-instrument-serif));
+  --font-serif: var(--site-font-serif, var(--style-font-serif, var(--font-instrument-serif)));
 }
 
 html {
