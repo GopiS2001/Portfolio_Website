@@ -1,5 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
+import { DM_Sans, Geist, Geist_Mono, Instrument_Serif, Playfair_Display } from "next/font/google";
 import snapshot from "@/data/site-snapshot.json";
 import { DESIGN_STYLES, type SiteData } from "@/lib/site-types";
 import { AdminProvider } from "@/components/AdminProvider";
