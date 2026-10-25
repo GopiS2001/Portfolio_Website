@@ -43,7 +43,7 @@ export function Hero() {
         </Reveal>
 
         <Reveal delay={0.1}>
-          <h1 className="max-w-5xl font-serif text-[clamp(2.75rem,8vw,6.75rem)] leading-[0.95] tracking-tight">
+          <h1 className="max-w-5xl font-serif text-[clamp(2.75rem,8vw,6.75rem)] leading-[0.95] tracking-tight zephyr:text-[clamp(2.5rem,7vw,5.75rem)] zephyr:leading-[1.04] zephyr:tracking-[-0.02em]">
             {title}
             {title && profile.heroHighlight ? " " : ""}
             {profile.heroHighlight && <em className="text-gradient">{profile.heroHighlight}</em>}
