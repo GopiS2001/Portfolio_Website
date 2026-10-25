@@ -1,11 +1,13 @@
 "use client";
 
 import type { ComponentType } from "react";
+import { MotionConfig } from "motion/react";
 import type { SectionKey } from "@/lib/site-types";
 import { useSite } from "./SiteProvider";
 import { Navbar } from "./Navbar";
 import { Maintenance } from "./Maintenance";
 import { WhatsappButton } from "./WhatsappButton";
+import { ScrollProgress } from "./motion";
 import { Hero } from "./sections/Hero";
 import { About } from "./sections/About";
 import { Skills } from "./sections/Skills";
@@ -32,8 +34,10 @@ export function SiteContent() {
 
   const visible = sections.filter((s) => s.visible).sort((a, b) => a.sortOrder - b.sortOrder);
 
+  // Animations off in the dashboard: movement stops everywhere, content still fades in
   return (
-    <>
+    <MotionConfig reducedMotion={settings.enableAnimations ? "user" : "always"}>
+      <ScrollProgress />
       {settings.showHeader && <Navbar />}
       <main className={settings.showHeader ? undefined : "pt-4"}>
         {visible.map((section) => {
@@ -43,6 +47,6 @@ export function SiteContent() {
       </main>
       {settings.showFooter && <Footer />}
       {settings.showWhatsappButton && <WhatsappButton />}
-    </>
+    </MotionConfig>
   );
 }

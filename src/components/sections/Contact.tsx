@@ -148,7 +148,7 @@ export function Contact() {
                 </div>
                 {copy && (
                   <NeuIconButton label={copied ? "Email copied" : "Copy email address"} size="sm" onClick={copyEmail}>
-                    {copied ? <Check className="size-4 text-success" /> : <Copy className="size-4" />}
+                    {copied ? <Check className="size-4 text-success-ink" /> : <Copy className="size-4" />}
                   </NeuIconButton>
                 )}
               </li>
@@ -198,7 +198,7 @@ export function Contact() {
                 </NeuButton>
                 <p role="status" className="text-sm">
                   {status === "sent" && (
-                    <span className="flex items-center gap-2 font-medium text-success">
+                    <span className="flex items-center gap-2 font-medium text-success-ink">
                       <CheckCircle2 aria-hidden className="size-4" /> Thanks! Your message was sent.
                     </span>
                   )}
@@ -219,7 +219,7 @@ export function Contact() {
             exit={{ opacity: 0, y: 16 }}
             className="neu fixed bottom-6 left-1/2 z-50 flex -translate-x-1/2 items-center gap-2 rounded-full px-5 py-3 text-sm font-medium"
           >
-            <Check aria-hidden className="size-4 text-success" /> Copied!
+            <Check aria-hidden className="size-4 text-success-ink" /> Copied!
           </motion.div>
         )}
       </AnimatePresence>

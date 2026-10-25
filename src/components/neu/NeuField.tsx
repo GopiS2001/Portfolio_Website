@@ -13,7 +13,7 @@ function Label({ name, label }: { name: string; label: string }) {
   );
 }
 
-function Error({ name, error }: { name: string; error?: string }) {
+function FieldError({ name, error }: { name: string; error?: string }) {
   if (!error) return null;
   return (
     <p id={`field-${name}-error`} className="mt-2 text-sm text-red-600 dark:text-red-400">
@@ -35,7 +35,7 @@ export function NeuInput({ name, label, error, className = "", ...rest }: Base &
         className={field}
         {...rest}
       />
-      <Error name={name} error={error} />
+      <FieldError name={name} error={error} />
     </div>
   );
 }
@@ -58,7 +58,7 @@ export function NeuTextarea({
         className={`${field} resize-none`}
         {...rest}
       />
-      <Error name={name} error={error} />
+      <FieldError name={name} error={error} />
     </div>
   );
 }

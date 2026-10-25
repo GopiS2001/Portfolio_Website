@@ -217,7 +217,7 @@ export function Projects() {
         aria-labelledby="project-dialog-title"
         onClose={() => setReading(null)}
         onClick={(e) => e.target === e.currentTarget && dialogRef.current?.close()}
-        className="neu m-auto w-[min(40rem,calc(100vw-2rem))] max-h-[85vh] p-0 text-fg backdrop:bg-black/40 backdrop:backdrop-blur-sm"
+        className="neu m-auto w-[min(40rem,calc(100vw-2rem))] outline-none max-h-[85vh] p-0 text-fg backdrop:bg-black/40 backdrop:backdrop-blur-sm"
       >
         {reading && (
           <div className="p-6 sm:p-8">

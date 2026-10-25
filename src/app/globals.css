@@ -14,11 +14,12 @@
   --shadow-light: #ffffff;
   --text: #2d3340; /* ≥ 7:1 on --bg */
   --text-muted: #5b6375; /* ≥ 4.5:1 on --bg */
-  --text-subtle: #6b7385;
+  --text-subtle: #5f6779;
   --accent: #4f6ef7;
   --accent-2: #7c5cff;
   --accent-ink: #3552d8; /* accent text on --bg, ≥ 4.5:1 */
   --success: #22a06b;
+  --success-ink: #126e47; /* success text on --bg, ≥ 4.5:1 */
   --line: rgb(45 51 64 / 0.1);
 
   --neu-distance: 8px;
@@ -62,6 +63,7 @@
   --accent-2: #a48bff;
   --accent-ink: #92a6ff;
   --success: #3ecf8e;
+  --success-ink: #3ecf8e;
   --line: rgb(255 255 255 / 0.07);
   color-scheme: dark;
 }
@@ -93,6 +95,7 @@
   --color-accent-ink: var(--accent-ink);
   --color-accent-soft: var(--accent-soft);
   --color-success: var(--success);
+  --color-success-ink: var(--success-ink);
   --shadow-neu: var(--neu-raised);
   --shadow-neu-sm: var(--neu-raised-sm);
   --shadow-neu-in: var(--neu-pressed);
@@ -158,7 +161,7 @@
   /* Primary action: accent fill so it reads as a button without the shadows */
   .neu-primary {
     /* The light theme's deeper accents in both themes, so white text keeps ≥ 4.5:1 */
-    background: linear-gradient(135deg, #4f6ef7, #7c5cff);
+    background: linear-gradient(135deg, #3a58e0, #6644e6);
     color: #fff;
     box-shadow:
       var(--neu-raised-sm),

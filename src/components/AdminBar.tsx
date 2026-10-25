@@ -69,7 +69,7 @@ export function AdminBar() {
           role="region"
           aria-label="Admin"
         >
-          <div className="flex items-center gap-1 rounded-full border border-line bg-elevated/90 p-1.5 pr-2 text-sm shadow-[0_12px_40px_-12px_rgb(0_0_0/0.35)] backdrop-blur-xl">
+          <div className="flex items-center gap-1 ui-float rounded-full p-1.5 pr-2 text-sm">
             <span className="grid size-8 place-items-center rounded-full bg-accent text-xs font-semibold text-bg">
               {initials(user.displayName)}
             </span>
@@ -107,7 +107,7 @@ export function AdminBar() {
                     animate={{ opacity: 1, y: 0, scale: 1 }}
                     exit={{ opacity: 0, y: 6, scale: 0.98 }}
                     transition={{ duration: 0.15 }}
-                    className="absolute bottom-full left-1/2 mb-2 w-48 -translate-x-1/2 overflow-hidden rounded-2xl border border-line bg-elevated p-1.5 shadow-[0_16px_40px_-12px_rgb(0_0_0/0.35)]"
+                    className="absolute bottom-full left-1/2 mb-2 w-48 -translate-x-1/2 overflow-hidden ui-float rounded-2xl p-1.5"
                   >
                     <p className="px-3 pt-1.5 pb-1 text-xs text-subtle">Edit in dashboard</p>
                     {EDIT_LINKS.map((l) => (

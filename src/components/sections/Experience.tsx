@@ -68,7 +68,7 @@ export function Experience() {
                       </span>
                     )}
                     {current && (
-                      <span className="neu-in-sm inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold text-success">
+                      <span className="neu-in-sm inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-xs font-semibold text-success-ink">
                         <span aria-hidden className="size-1.5 rounded-full bg-success" />
                         Current
                       </span>

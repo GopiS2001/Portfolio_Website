@@ -4,18 +4,14 @@ import {
   animate,
   motion,
   useInView,
-  useMotionValue,
   useReducedMotionConfig,
   useScroll,
   useSpring,
-  type HTMLMotionProps,
 } from "motion/react";
-import { useEffect, useRef, type PointerEvent, type ReactNode } from "react";
+import { useEffect, useRef } from "react";
 
 /** Shared easing for every entrance: a long, soft deceleration. */
 export const EASE = [0.22, 1, 0.36, 1] as const;
-
-const finePointer = (e: PointerEvent) => e.pointerType === "mouse";
 
 // ---------------------------------------------------------------------------
 
@@ -88,77 +84,6 @@ export function SplitReveal({
         );
       })}
     </>
-  );
-}
-
-// ---------------------------------------------------------------------------
-
-/** Pulls its child gently toward the cursor and springs back on leave. Mouse only. */
-export function Magnetic({ children, strength = 0.3 }: { children: ReactNode; strength?: number }) {
-  const reduce = useReducedMotionConfig();
-  const x = useSpring(useMotionValue(0), { stiffness: 220, damping: 16, mass: 0.4 });
-  const y = useSpring(useMotionValue(0), { stiffness: 220, damping: 16, mass: 0.4 });
-
-  const onMove = (e: PointerEvent<HTMLSpanElement>) => {
-    if (reduce || !finePointer(e)) return;
-    const r = e.currentTarget.getBoundingClientRect();
-    x.set((e.clientX - r.left - r.width / 2) * strength);
-    y.set((e.clientY - r.top - r.height / 2) * strength);
-  };
-  const reset = () => {
-    x.set(0);
-    y.set(0);
-  };
-
-  return (
-    <motion.span className="inline-block" style={{ x, y }} onPointerMove={onMove} onPointerLeave={reset}>
-      {children}
-    </motion.span>
-  );
-}
-
-// ---------------------------------------------------------------------------
-
-type TiltProps = HTMLMotionProps<"div"> & { as?: "div" | "article"; max?: number };
-
-/**
- * Card that tilts toward the cursor in 3D and carries a soft accent spotlight under it
- * (.spotlight in globals.css reads --mx / --my). Tilt is skipped for reduced motion and touch.
- */
-export function TiltCard({ as = "div", max = 5, className, children, style, ...rest }: TiltProps) {
-  const reduce = useReducedMotionConfig();
-  const spring = { stiffness: 200, damping: 20, mass: 0.5 };
-  const rotateX = useSpring(0, spring);
-  const rotateY = useSpring(0, spring);
-  const Tag = as === "article" ? motion.article : motion.div;
-
-  const onMove = (e: PointerEvent<HTMLElement>) => {
-    if (!finePointer(e)) return;
-    const el = e.currentTarget;
-    const r = el.getBoundingClientRect();
-    const px = (e.clientX - r.left) / r.width;
-    const py = (e.clientY - r.top) / r.height;
-    el.style.setProperty("--mx", `${px * 100}%`);
-    el.style.setProperty("--my", `${py * 100}%`);
-    if (reduce) return;
-    rotateY.set((px - 0.5) * max * 2);
-    rotateX.set((0.5 - py) * max * 2);
-  };
-  const reset = () => {
-    rotateX.set(0);
-    rotateY.set(0);
-  };
-
-  return (
-    <Tag
-      {...(rest as HTMLMotionProps<"div">)}
-      className={`spotlight ${className ?? ""}`}
-      style={{ rotateX, rotateY, transformPerspective: 1100, ...style }}
-      onPointerMove={onMove}
-      onPointerLeave={reset}
-    >
-      {children}
-    </Tag>
   );
 }
 

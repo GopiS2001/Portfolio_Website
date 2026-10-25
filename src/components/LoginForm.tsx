@@ -50,7 +50,7 @@ export function LoginForm() {
   };
 
   const input =
-    "w-full rounded-2xl border border-line bg-elevated px-4 py-3 text-fg outline-none transition placeholder:text-subtle focus:border-accent focus:ring-4 focus:ring-accent-soft";
+    "ui-inset w-full rounded-2xl px-4 py-3 text-fg outline-none transition placeholder:text-subtle focus:border-accent focus:ring-4 focus:ring-accent-soft";
 
   return (
     <main className="relative flex min-h-dvh items-center justify-center px-4 py-16">
@@ -61,11 +61,11 @@ export function LoginForm() {
           <ArrowLeft className="size-4" /> Back to the website
         </Link>
 
-        <div className="rounded-3xl border border-line bg-card p-7 shadow-[0_24px_60px_-24px_rgb(0_0_0/0.35)] backdrop-blur-xl">
+        <div className="ui-raised rounded-3xl p-7">
           <span className="mb-5 grid size-11 place-items-center rounded-2xl bg-accent-soft text-accent">
             <Lock className="size-5" />
           </span>
-          <h1 className="font-serif text-4xl tracking-tight">Admin sign in</h1>
+          <h1 className="font-display text-3xl font-bold tracking-tight">Admin sign in</h1>
           <p className="mt-1.5 text-sm text-muted">Use your dashboard account. You&apos;ll stay signed in on this browser.</p>
 
           {notice && !error && (
@@ -117,7 +117,7 @@ export function LoginForm() {
             <button
               type="submit"
               disabled={busy || status === "loading"}
-              className="flex w-full items-center justify-center gap-2 rounded-2xl bg-fg px-4 py-3 font-medium text-bg transition hover:opacity-90 disabled:opacity-60"
+              className="flex w-full items-center justify-center gap-2 ui-solid ui-press rounded-2xl bg-fg px-4 py-3 font-medium text-bg hover:opacity-90 disabled:opacity-60"
             >
               {busy && <LoaderCircle className="size-4 animate-spin" />}
               {busy ? "Signing in…" : "Sign in"}
