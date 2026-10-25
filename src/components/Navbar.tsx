@@ -1,10 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "motion/react";
+import { AnimatePresence, motion, useMotionValueEvent, useScroll } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
 import { StyleSwitcher } from "./StyleSwitcher";
+import { EASE, Magnetic } from "./motion";
 import { useSite } from "./SiteProvider";
 
 export function Navbar() {
@@ -20,6 +21,15 @@ export function Navbar() {
   const [active, setActive] = useState<string>(firstId);
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
+  const [hidden, setHidden] = useState(false);
+
+  // Tuck the bar away while reading downwards; any upward scroll brings it back
+  const { scrollY } = useScroll();
+  useMotionValueEvent(scrollY, "change", (y) => {
+    const previous = scrollY.getPrevious() ?? 0;
+    if (y < 320 || y < previous - 4) setHidden(false);
+    else if (y > previous + 4) setHidden(true);
+  });
 
   useEffect(() => {
     const onScroll = () => setScrolled(window.scrollY > 24);
@@ -46,7 +56,12 @@ export function Navbar() {
   }, [linkIds]);
 
   return (
-    <header className="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-6">
+    <motion.header
+      className="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-6"
+      initial={{ y: "-130%" }}
+      animate={{ y: hidden && !open ? "-130%" : "0%" }}
+      transition={{ duration: 0.6, ease: EASE }}
+    >
       <nav
         className={`mx-auto flex max-w-6xl items-center justify-between rounded-full border px-3 py-2 pl-5 transition-all duration-500 ${
           scrolled
@@ -88,12 +103,16 @@ export function Navbar() {
           {settings.enableStyleSwitcher && <StyleSwitcher />}
           {settings.enableThemeToggle && <ThemeToggle />}
           {settings.showHeaderCta && contactVisible && (
-            <a
-              href="#contact"
-              className="ui-solid ui-press hidden rounded-full bg-fg px-5 py-2.5 text-sm font-medium text-bg hover:opacity-85 sm:inline-block"
-            >
-              {settings.headerCtaLabel}
-            </a>
+            <span className="hidden sm:inline-block">
+              <Magnetic strength={0.2}>
+                <a
+                  href="#contact"
+                  className="sheen ui-solid ui-press inline-block rounded-full bg-fg px-5 py-2.5 text-sm font-medium text-bg hover:opacity-85"
+                >
+                  {settings.headerCtaLabel}
+                </a>
+              </Magnetic>
+            </span>
           )}
           {navLinks.length > 0 && (
             <button
@@ -134,6 +153,6 @@ export function Navbar() {
           </motion.ul>
         )}
       </AnimatePresence>
-    </header>
+    </motion.header>
   );
 }
