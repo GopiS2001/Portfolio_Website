@@ -5,7 +5,7 @@ import { AnimatePresence, motion } from "motion/react";
 import { Check, CheckCircle2, Copy, Loader2, Mail, MapPin, Phone, Send } from "lucide-react";
 import { apiUrl } from "@/lib/api";
 import { cleanUrl, whatsappHref } from "@/lib/links";
-import { NeuButton, NeuCard, NeuIconButton, NeuInput, NeuTextarea } from "../neu";
+import { NeuButton, NeuIconButton, NeuInput, NeuTextarea } from "../neu";
 import { Reveal } from "../Reveal";
 import { Section } from "../Section";
 import { InstagramIcon, WhatsappIcon } from "../SocialIcons";
@@ -38,8 +38,9 @@ export function Contact() {
     const data = Object.fromEntries(new FormData(form)) as Fields;
     const found = validate(data);
     setErrors(found);
-    if (Object.keys(found).length > 0) {
-      form.querySelector<HTMLElement>("[aria-invalid=true]")?.focus();
+    const firstInvalid = Object.keys(found)[0];
+    if (firstInvalid) {
+      (form.elements.namedItem(firstInvalid) as HTMLElement | null)?.focus();
       return;
     }
     setStatus("sending");
@@ -157,7 +158,7 @@ export function Contact() {
 
         {settings.showContactForm && (
           <Reveal delay={0.1}>
-            <NeuCard as="form" onSubmit={onSubmit} onChange={onChange} noValidate className="p-6 sm:p-9">
+            <form onSubmit={onSubmit} onChange={onChange} noValidate className="neu p-6 sm:p-9">
               <div className="grid gap-5 sm:grid-cols-2">
                 <NeuInput
                   name="name"
@@ -203,7 +204,7 @@ export function Contact() {
                   )}
                 </p>
               </div>
-            </NeuCard>
+            </form>
           </Reveal>
         )}
       </div>
