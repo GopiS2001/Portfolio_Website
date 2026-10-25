@@ -15,7 +15,7 @@ export function Hero() {
   return (
     <section id="home" className="relative overflow-hidden pt-28 pb-24 md:pt-32 md:pb-32">
       {/* Ambient background */}
-      <div aria-hidden className="bg-grid pointer-events-none absolute inset-0" />
+      <div aria-hidden className="bg-grid pointer-events-none absolute inset-0 zephyr:hidden" />
       <div
         aria-hidden
         className="pointer-events-none absolute -top-40 left-1/2 h-[520px] w-[820px] max-w-[120vw] -translate-x-1/2 rounded-full blur-3xl"
