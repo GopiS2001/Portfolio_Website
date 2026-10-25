@@ -65,10 +65,14 @@ export function Hero() {
               {projectsVisible && (
                 <a
                   href="#projects"
-                  className="group inline-flex items-center gap-2 ui-solid ui-press rounded-full bg-fg px-7 py-3.5 text-sm font-medium text-bg hover:opacity-90"
+                  className="group inline-flex items-center gap-2 ui-solid ui-press rounded-full bg-fg px-7 py-3.5 text-sm font-medium text-bg hover:opacity-90 zephyr:gap-3 zephyr:border zephyr:border-fg/20 zephyr:bg-transparent zephyr:py-1.5 zephyr:pr-6 zephyr:pl-1.5 zephyr:text-xs zephyr:tracking-[0.14em] zephyr:text-fg zephyr:uppercase zephyr:hover:border-fg/40 zephyr:hover:opacity-100"
                 >
+                  {/* Zephyr: an ink disc with a bolt leads the label */}
+                  <span className="hidden size-9 place-items-center rounded-full bg-fg text-bg zephyr:grid">
+                    <Zap className="size-3.5 fill-current" />
+                  </span>
                   {profile.primaryCtaLabel}
-                  <ArrowUpRight className="size-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  <ArrowUpRight className="size-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5 zephyr:hidden" />
                 </a>
               )}
               {showResume && (
