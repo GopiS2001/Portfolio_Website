@@ -1,6 +1,7 @@
 "use client";
 
 import { whatsappHref } from "@/lib/links";
+import { NeuIconButton } from "./neu";
 import { WhatsappIcon } from "./SocialIcons";
 import { useSite } from "./SiteProvider";
 
@@ -11,14 +12,13 @@ export function WhatsappButton() {
   if (!href) return null;
 
   return (
-    <a
+    <NeuIconButton
       href={href}
-      target="_blank"
-      rel="noreferrer"
-      aria-label="Chat on WhatsApp"
-      className="fixed right-5 bottom-5 z-40 grid size-14 place-items-center rounded-full bg-[#25d366] text-white shadow-[0_10px_30px_-10px_rgb(37_211_102/0.7)] transition hover:scale-105"
+      label="Chat on WhatsApp"
+      size="lg"
+      className="fixed right-5 bottom-5 z-40 !rounded-full !text-[#1fa855] dark:!text-[#25d366]"
     >
       <WhatsappIcon className="size-7" />
-    </a>
+    </NeuIconButton>
   );
 }
