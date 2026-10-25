@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Menu, X } from "lucide-react";
 import { ThemeToggle } from "./ThemeToggle";
+import { StyleSwitcher } from "./StyleSwitcher";
 import { useSite } from "./SiteProvider";
 
 export function Navbar() {
