@@ -330,6 +330,13 @@ body {
   animation: shine 8s linear infinite;
 }
 
+/* Zephyr sets its highlight in plain italic ink rather than a shimmering gradient */
+[data-style="zephyr"] .text-gradient {
+  background: none;
+  color: inherit;
+  animation: none;
+}
+
 @keyframes shine {
   to {
     background-position: 200% center;
