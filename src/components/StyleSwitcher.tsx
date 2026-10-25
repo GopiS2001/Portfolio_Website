@@ -40,6 +40,14 @@ const OPTIONS: { value: DesignStyle; label: string; swatch: CSSProperties }[] = 
       border: "1px solid rgb(60 48 30 / .35)",
     },
   },
+  {
+    value: "zephyr",
+    label: "Zephyr",
+    swatch: {
+      background: "radial-gradient(circle at 75% 30%, #f3d29a 0, transparent 45%), linear-gradient(#a9b3a5, #d6dbd0)",
+      border: "1px solid rgb(255 255 255 / .6)",
+    },
+  },
 ];
 
 /** Header button that lets visitors switch the site's design style (remembered per browser). */
