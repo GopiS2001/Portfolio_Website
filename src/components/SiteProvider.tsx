@@ -5,8 +5,7 @@ import { MotionConfig } from "motion/react";
 import { apiUrl } from "@/lib/api";
 import { localizeUploads } from "@/lib/uploads";
 import { BUILT_IN_SANS, BUILT_IN_SERIF, googleFontHref } from "@/lib/appearance";
-import { DESIGN_STYLES, type DesignStyle, type SiteData, type SiteSettings } from "@/lib/site-types";
-import { STYLE_KEY } from "./StyleSwitcher";
+import type { SiteData, SiteSettings } from "@/lib/site-types";
 
 export type DataSource = "live" | "snapshot" | "cache" | "build";
 
@@ -145,20 +144,9 @@ function useAppearance(settings: SiteSettings, name: string) {
       (theme === "system" && window.matchMedia("(prefers-color-scheme: dark)").matches);
     root.classList.toggle("dark", dark);
 
-    // Design style: the configured one, unless the switcher is on and the visitor picked another.
-    let style: DesignStyle = settings.designStyle || "neumorphism";
-    if (settings.enableStyleSwitcher) {
-      try {
-        const saved = localStorage.getItem(STYLE_KEY) as DesignStyle | null;
-        if (saved && DESIGN_STYLES.includes(saved)) style = saved;
-      } catch {}
-    }
-    root.dataset.style = style;
-
     root.style.setProperty("--site-font-size", `${settings.baseFontSize || 16}px`);
     root.style.setProperty("--heading-scale", String((settings.headingScale || 100) / 100));
-    root.style.setProperty("--accent-light", settings.accentLight || "#a87a32");
-    root.style.setProperty("--accent-dark", settings.accentDark || "#d9b26a");
+    // Accent colours are part of the neumorphism palette (globals.css), not the dashboard's
     root.classList.toggle("no-animations", !settings.enableAnimations);
 
     loadFont(settings.fontSans, "sans");
