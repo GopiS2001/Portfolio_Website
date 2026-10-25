@@ -157,7 +157,8 @@
 
   /* Primary action: accent fill so it reads as a button without the shadows */
   .neu-primary {
-    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    /* The light theme's deeper accents in both themes, so white text keeps ≥ 4.5:1 */
+    background: linear-gradient(135deg, #4f6ef7, #7c5cff);
     color: #fff;
     box-shadow:
       var(--neu-raised-sm),
