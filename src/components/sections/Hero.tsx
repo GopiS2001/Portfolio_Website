@@ -1,127 +1,130 @@
 "use client";
 
-import { ArrowDown, ArrowUpRight, MapPin, Zap } from "lucide-react";
+import { ArrowRight, Download, MapPin } from "lucide-react";
+import { cleanUrl } from "@/lib/links";
+import { NeuAvatar, NeuButton, NeuStat } from "../neu";
+import { SplitReveal } from "../motion";
 import { Reveal } from "../Reveal";
 import { useSite } from "../SiteProvider";
 
+// Where the (up to three) stat bubbles sit around the photo orb, and their float offsets
+const STAT_SPOTS = [
+  "top-[2%] -left-[6%] sm:left-[-4%]",
+  "top-[38%] -right-[8%] sm:right-[-10%] [animation-delay:-2s]",
+  "bottom-[0%] left-[8%] [animation-delay:-4s]",
+];
+
 export function Hero() {
   const { profile, settings, stats, sections } = useSite().data;
-  const visible = sections.filter((s) => s.visible).sort((a, b) => a.sortOrder - b.sortOrder);
-  const next = visible[visible.findIndex((s) => s.key === "home") + 1];
+  const visible = sections.filter((s) => s.visible);
   const projectsVisible = visible.some((s) => s.key === "projects");
   const title = profile.heroTitle.replace(/\{name\}/g, profile.name);
-  const showResume = settings.showResumeButton && profile.resumeUrl;
+  const resumeUrl = settings.showResumeButton ? cleanUrl(profile.resumeUrl) : "";
+  const shownStats = settings.showStats ? stats.slice(0, 3) : [];
+
+  // Headline words rise in first; everything else follows once they've landed
+  const count = (s: string) => s.split(/\s+/).filter(Boolean).length;
+  const after = 0.25 + count([title, profile.heroHighlight, profile.heroTitleSuffix].join(" ")) * 0.06;
 
   return (
-    <section id="home" className="relative overflow-hidden pt-28 pb-24 md:pt-32 md:pb-32">
-      {/* Ambient background */}
-      <div aria-hidden className="bg-grid pointer-events-none absolute inset-0 zephyr:hidden" />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -top-40 left-1/2 h-[520px] w-[820px] max-w-[120vw] -translate-x-1/2 rounded-full blur-3xl"
-        style={{ background: "radial-gradient(closest-side, var(--glow), transparent)" }}
-      />
-
-      <div className="relative mx-auto max-w-6xl px-4 sm:px-6">
-        <Reveal>
-          <div className="mb-8 flex flex-wrap items-center gap-3">
-            {profile.available && (
-              <span className="ui-raised inline-flex items-center gap-2 rounded-full px-4 py-1.5 text-xs text-muted">
-                <span className="relative flex size-2">
-                  <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-400 opacity-60" />
-                  <span className="relative inline-flex size-2 rounded-full bg-emerald-500" />
+    <section id="home" aria-label="Introduction" className="relative scroll-mt-20 overflow-x-clip">
+      <div className="mx-auto grid max-w-[1200px] items-center gap-14 px-4 pt-12 pb-16 sm:px-6 md:pt-16 md:pb-24 lg:grid-cols-[minmax(0,7fr)_minmax(0,5fr)] lg:gap-10">
+        <div>
+          {profile.available && (
+            <Reveal>
+              <p className="neu-in-sm mb-8 inline-flex max-w-full items-center gap-2.5 rounded-full px-4 py-2 text-xs text-muted sm:text-sm">
+                <span aria-hidden className="animate-pulse-dot size-2 shrink-0 rounded-full bg-success" />
+                <span className="truncate">
+                  {profile.availabilityText || "Available for new projects"}
+                  {profile.location && (
+                    <>
+                      <span aria-hidden className="mx-1.5 text-subtle">
+                        ·
+                      </span>
+                      <MapPin aria-hidden className="mr-1 inline size-3.5 align-[-2px]" />
+                      {profile.location}
+                    </>
+                  )}
                 </span>
-                {profile.availabilityText}
-              </span>
-            )}
-            {profile.location && (
-              <span className="inline-flex items-center gap-1.5 text-xs text-muted">
-                <MapPin className="size-3.5" /> {profile.location}
-              </span>
-            )}
+              </p>
+            </Reveal>
+          )}
+
+          <h1
+            aria-label={[title, profile.heroHighlight, profile.heroTitleSuffix].filter(Boolean).join(" ")}
+            className="font-display text-[clamp(2.25rem,6vw,3.5rem)] leading-[1.08] font-bold tracking-tight"
+          >
+            <span aria-hidden>
+              <SplitReveal text={title} delay={0.15} />
+              {title && profile.heroHighlight ? " " : ""}
+              {profile.heroHighlight && (
+                <em>
+                  {/* The gradient sits on each word, since the words move independently */}
+                  <SplitReveal
+                    text={profile.heroHighlight}
+                    delay={0.15 + count(title) * 0.06}
+                    className="text-grad pr-[0.08em]"
+                  />
+                </em>
+              )}
+              {profile.heroTitleSuffix ? " " : ""}
+              {profile.heroTitleSuffix && (
+                <SplitReveal
+                  text={profile.heroTitleSuffix}
+                  delay={0.15 + count([title, profile.heroHighlight].join(" ")) * 0.06}
+                />
+              )}
+            </span>
+          </h1>
+
+          {(profile.role || profile.tagline) && (
+            <Reveal delay={after}>
+              <p className="mt-6 max-w-xl text-base leading-relaxed text-muted sm:text-[1.0625rem]">
+                {profile.role && <strong className="font-semibold text-fg">{profile.role}.</strong>}{" "}
+                {profile.tagline}
+              </p>
+            </Reveal>
+          )}
+
+          {(projectsVisible || resumeUrl) && (
+            <Reveal delay={after + 0.1}>
+              <div className="mt-9 flex flex-wrap items-center gap-4">
+                {projectsVisible && (
+                  <NeuButton href="#projects" size="lg" className="group">
+                    {profile.primaryCtaLabel}
+                    <ArrowRight aria-hidden className="size-4 transition group-hover:translate-x-0.5" />
+                  </NeuButton>
+                )}
+                {resumeUrl && (
+                  <NeuButton
+                    href={resumeUrl}
+                    variant="ghost"
+                    size="lg"
+                    target={resumeUrl.startsWith("http") ? "_blank" : undefined}
+                    rel="noreferrer"
+                  >
+                    <Download aria-hidden className="size-4" />
+                    {profile.resumeCtaLabel}
+                  </NeuButton>
+                )}
+              </div>
+            </Reveal>
+          )}
+        </div>
+
+        {/* Photo orb with the stats floating around it */}
+        <Reveal delay={0.2} className="mx-auto w-full max-w-[22rem] sm:max-w-[26rem]">
+          <div className="relative aspect-square px-6 sm:px-8">
+            <div className="neu grid size-full place-items-center rounded-full p-5 sm:p-7">
+              <NeuAvatar src={profile.avatarUrl} name={profile.name} className="size-full" />
+            </div>
+            {shownStats.map((s, i) => (
+              <div key={s.id} className={`animate-float absolute ${STAT_SPOTS[i]}`}>
+                <NeuStat value={s.value} label={s.label} delay={after + 0.3 + i * 0.1} />
+              </div>
+            ))}
           </div>
         </Reveal>
-
-        <Reveal delay={0.1}>
-          <h1 className="max-w-5xl font-serif text-[clamp(2.75rem,8vw,6.75rem)] leading-[0.95] tracking-tight zephyr:text-[clamp(2.5rem,7vw,5.75rem)] zephyr:leading-[1.04] zephyr:tracking-[-0.02em]">
-            {title}
-            {title && profile.heroHighlight ? " " : ""}
-            {profile.heroHighlight && <em className="text-gradient">{profile.heroHighlight}</em>}
-            {profile.heroTitleSuffix ? ` ${profile.heroTitleSuffix}` : ""}
-          </h1>
-        </Reveal>
-
-        {(profile.role || profile.tagline) && (
-          <Reveal delay={0.2}>
-            <p className="mt-8 max-w-xl text-lg leading-relaxed text-muted">
-              {profile.role && <span className="text-fg">{profile.role}.</span>} {profile.tagline}
-            </p>
-          </Reveal>
-        )}
-
-        {(projectsVisible || showResume) && (
-          <Reveal delay={0.3}>
-            <div className="mt-10 flex flex-wrap items-center gap-3">
-              {projectsVisible && (
-                <a
-                  href="#projects"
-                  className="group inline-flex items-center gap-2 ui-solid ui-press rounded-full bg-fg px-7 py-3.5 text-sm font-medium text-bg hover:opacity-90 zephyr:gap-3 zephyr:border zephyr:border-fg/20 zephyr:bg-transparent zephyr:py-1.5 zephyr:pr-6 zephyr:pl-1.5 zephyr:text-xs zephyr:tracking-[0.14em] zephyr:text-fg zephyr:uppercase zephyr:hover:border-fg/40 zephyr:hover:opacity-100"
-                >
-                  {/* Zephyr: an ink disc with a bolt leads the label */}
-                  <span className="hidden size-9 place-items-center rounded-full bg-fg text-bg zephyr:grid">
-                    <Zap className="size-3.5 fill-current" />
-                  </span>
-                  {profile.primaryCtaLabel}
-                  <ArrowUpRight className="size-4 transition group-hover:translate-x-0.5 group-hover:-translate-y-0.5 zephyr:hidden" />
-                </a>
-              )}
-              {showResume && (
-                <a
-                  href={profile.resumeUrl}
-                  target={profile.resumeUrl.startsWith("http") ? "_blank" : undefined}
-                  rel="noreferrer"
-                  className="ui-raised ui-press inline-flex items-center gap-2 rounded-full px-7 py-3.5 text-sm font-medium hover:border-accent/60 zephyr:py-3 zephyr:text-xs zephyr:tracking-[0.14em] zephyr:uppercase"
-                >
-                  {profile.resumeCtaLabel}
-                </a>
-              )}
-            </div>
-          </Reveal>
-        )}
-
-        {settings.showStats && stats.length > 0 && (
-          <Reveal delay={0.4}>
-            {/* Zephyr turns the stats into a numbered rail of small glass tiles */}
-            <dl className="mt-20 grid max-w-2xl grid-cols-3 gap-6 border-t border-line pt-8 zephyr:mb-8 zephyr:max-w-xl zephyr:gap-3 zephyr:border-t-0 zephyr:pt-0">
-              {stats.map((s, i) => (
-                <div
-                  key={s.id}
-                  className="zephyr:relative zephyr:rounded-xl zephyr:border zephyr:border-(--s-edge) zephyr:bg-(--s-fill) zephyr:p-4 zephyr:shadow-(--s-raised) zephyr:backdrop-blur-md"
-                >
-                  <dt className="sr-only">{s.label}</dt>
-                  <dd className="font-serif text-4xl sm:text-5xl zephyr:text-3xl zephyr:lining-nums sm:zephyr:text-4xl">{s.value}</dd>
-                  <dd className="mt-1 text-xs tracking-wide text-muted sm:text-sm zephyr:text-xs">{s.label}</dd>
-                  <dd
-                    aria-hidden
-                    className="absolute top-full left-0 mt-2.5 hidden w-full border-t border-line pt-1.5 font-mono text-[0.7rem] text-muted zephyr:block"
-                  >
-                    {String(i + 1).padStart(2, "0")}
-                  </dd>
-                </div>
-              ))}
-            </dl>
-          </Reveal>
-        )}
-
-        {next && (
-          <a
-            href={`#${next.key}`}
-            aria-label={`Scroll to ${next.navLabel || next.key}`}
-            className="absolute right-6 bottom-0 hidden ui-raised ui-press size-12 place-items-center rounded-full text-muted hover:text-fg md:grid"
-          >
-            <ArrowDown className="size-4 animate-bounce" />
-          </a>
-        )}
       </div>
     </section>
   );
