@@ -99,7 +99,7 @@ export function Hero() {
                   className="zephyr:relative zephyr:rounded-xl zephyr:border zephyr:border-(--s-edge) zephyr:bg-(--s-fill) zephyr:p-4 zephyr:shadow-(--s-raised) zephyr:backdrop-blur-md"
                 >
                   <dt className="sr-only">{s.label}</dt>
-                  <dd className="font-serif text-4xl sm:text-5xl zephyr:text-3xl sm:zephyr:text-4xl">{s.value}</dd>
+                  <dd className="font-serif text-4xl sm:text-5xl zephyr:text-3xl zephyr:lining-nums sm:zephyr:text-4xl">{s.value}</dd>
                   <dd className="mt-1 text-xs tracking-wide text-muted sm:text-sm zephyr:text-xs">{s.label}</dd>
                   <dd
                     aria-hidden
