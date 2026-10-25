@@ -14,7 +14,8 @@ export function NeuToggle({ label, checked, knob, knobClassName = "", className 
   return (
     <button
       type="button"
-      role="switch"
+      // A CSS-driven toggle has no known state at render time, so it stays a plain button
+      role={checked === undefined ? undefined : "switch"}
       aria-checked={checked}
       aria-label={label}
       title={label}
