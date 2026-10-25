@@ -1,7 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Geist, Geist_Mono, Instrument_Serif } from "next/font/google";
 import snapshot from "@/data/site-snapshot.json";
-import type { SiteData } from "@/lib/site-types";
+import { DESIGN_STYLES, type SiteData } from "@/lib/site-types";
 import { AdminProvider } from "@/components/AdminProvider";
 import { AdminBar } from "@/components/AdminBar";
 import "./globals.css";
