@@ -40,7 +40,9 @@ export const viewport: Viewport = {
 // Runs before first paint so the theme never flashes. Uses the build-time settings;
 // SiteProvider re-applies them once the live settings arrive.
 const { defaultTheme, enableThemeToggle } = site.settings;
-const themeScript = `(function(){try{var d=${JSON.stringify(defaultTheme)},t=${enableThemeToggle}?localStorage.getItem("theme"):null;if(t!=="light"&&t!=="dark"){t=d}if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.classList.toggle("dark",t==="dark")}catch(e){}})()`;
+const designStyle = site.settings.designStyle || "neumorphism";
+const styleSwitcher = !!site.settings.enableStyleSwitcher;
+const themeScript = `(function(){try{var d=${JSON.stringify(defaultTheme)},t=${enableThemeToggle}?localStorage.getItem("theme"):null;if(t!=="light"&&t!=="dark"){t=d}if(t!=="light"&&t!=="dark"){t=matchMedia("(prefers-color-scheme: dark)").matches?"dark":"light"}document.documentElement.classList.toggle("dark",t==="dark");var s=${styleSwitcher}?localStorage.getItem("design-style"):null;if(${JSON.stringify(DESIGN_STYLES)}.indexOf(s)<0){s=${JSON.stringify(designStyle)}}document.documentElement.dataset.style=s}catch(e){}})()`;
 
 const s = site.settings;
 const initialStyle = {
