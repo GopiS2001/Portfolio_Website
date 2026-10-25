@@ -5,7 +5,8 @@ import { MotionConfig } from "motion/react";
 import { apiUrl } from "@/lib/api";
 import { localizeUploads } from "@/lib/uploads";
 import { BUILT_IN_SANS, BUILT_IN_SERIF, googleFontHref } from "@/lib/appearance";
-import type { SiteData, SiteSettings } from "@/lib/site-types";
+import { DESIGN_STYLES, type DesignStyle, type SiteData, type SiteSettings } from "@/lib/site-types";
+import { STYLE_KEY } from "./StyleSwitcher";
 
 export type DataSource = "live" | "snapshot" | "cache" | "build";
 
