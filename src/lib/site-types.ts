@@ -1,6 +1,9 @@
 // Shape of GET /api/public/site — and of the offline snapshot files the backend writes.
 
 export type ThemeMode = "light" | "dark" | "system";
+
+export const DESIGN_STYLES = ["neumorphism", "glassmorphism", "claymorphism", "skeuomorphism"] as const;
+export type DesignStyle = (typeof DESIGN_STYLES)[number];
 export type SectionKey = "home" | "about" | "skills" | "experience" | "projects" | "contact";
 
 export type SiteSettings = {
