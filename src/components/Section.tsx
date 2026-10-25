@@ -16,7 +16,7 @@ export function SectionTitle({ id }: { id: SectionKey }) {
     <>
       {title}
       {spaceAfterTitle}
-      {highlight && <em className="text-accent">{highlight}</em>}
+      {highlight && <em className="text-grad pr-[0.08em]">{highlight}</em>}
       {spaceBeforeSuffix}
       {titleSuffix}
     </>
@@ -27,15 +27,22 @@ export function Section({ id, children }: { id: SectionKey; children: ReactNode 
   const eyebrow = useSite().data.sections.find((s) => s.key === id)?.eyebrow;
 
   return (
-    <section id={id} className="relative mx-auto max-w-6xl px-4 pt-28 pb-24 sm:px-6 md:py-32">
-      <Reveal className="mb-14 max-w-2xl">
+    <section
+      id={id}
+      aria-labelledby={`${id}-title`}
+      className="relative mx-auto max-w-[1200px] scroll-mt-20 px-4 py-16 sm:px-6 md:py-24"
+    >
+      <Reveal className="mb-12 max-w-2xl md:mb-14">
         {eyebrow && (
-          <p className="mb-4 flex items-center gap-3 font-mono text-xs tracking-[0.25em] text-accent uppercase">
-            <span className="h-px w-8 bg-accent" />
+          <p className="neu-in-sm mb-5 inline-flex items-center gap-2 rounded-full px-4 py-1.5 font-mono text-xs tracking-[0.2em] text-accent-ink uppercase">
+            <span aria-hidden className="size-1.5 rounded-full bg-accent" />
             {eyebrow}
           </p>
         )}
-        <h2 className="font-serif text-4xl leading-[1.05] tracking-tight sm:text-5xl md:text-6xl">
+        <h2
+          id={`${id}-title`}
+          className="font-display text-[1.75rem] leading-[1.15] font-semibold tracking-tight sm:text-4xl md:text-[2.5rem]"
+        >
           <SectionTitle id={id} />
         </h2>
       </Reveal>
