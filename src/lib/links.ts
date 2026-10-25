@@ -16,8 +16,10 @@ export const SITE_URL = (process.env.NEXT_PUBLIC_SITE_URL || "https://gopi-portf
 
 // A social site's home page with no profile path ("https://x.com/") is as good as empty
 const BARE_SOCIAL = /^https?:\/\/(www\.)?(x|twitter|github|linkedin|instagram)\.com\/?$/i;
-// Share-sheet tracking parameters that Instagram / X append to profile links
-const TRACKING = /^(igsh|igshid|stkn|exln|utm_\w+|s|t)$/i;
+// Share-sheet tracking parameters that Instagram / X append to profile links; utm_* anywhere
+const SOCIAL_HOST = /(^|\.)(instagram|x|twitter)\.com$/i;
+const SOCIAL_TRACKING = /^(igsh|igshid|stkn|exln|s|t)$/i;
+const TRACKING = /^utm_\w+$/i;
 
 /**
  * Turns whatever was typed in the dashboard into a usable link, or "" to hide the button:
