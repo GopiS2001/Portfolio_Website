@@ -1,6 +1,7 @@
 "use client";
 
 import { Moon, Sun } from "lucide-react";
+import { NeuToggle } from "./neu";
 
 export function ThemeToggle() {
   const toggle = () => {
@@ -12,16 +13,18 @@ export function ThemeToggle() {
     } catch {}
   };
 
-  // Both icons render; CSS picks the visible one, so there's no hydration mismatch.
+  // The knob position and icon follow the .dark class in CSS, so there's no hydration mismatch.
   return (
-    <button
-      type="button"
+    <NeuToggle
+      label="Toggle dark mode"
       onClick={toggle}
-      aria-label="Toggle dark mode"
-      className="group relative grid size-10 place-items-center overflow-hidden rounded-full border border-line bg-card text-fg backdrop-blur transition hover:border-accent/50"
-    >
-      <Sun className="size-[18px] transition duration-500 dark:-translate-y-8 dark:rotate-90 dark:opacity-0" />
-      <Moon className="absolute size-[18px] translate-y-8 -rotate-90 opacity-0 transition duration-500 dark:translate-y-0 dark:rotate-0 dark:opacity-100" />
-    </button>
+      knobClassName="dark:translate-x-7"
+      knob={
+        <>
+          <Sun className="size-4 dark:hidden" />
+          <Moon className="hidden size-4 dark:block" />
+        </>
+      }
+    />
   );
 }
