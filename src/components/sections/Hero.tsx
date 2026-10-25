@@ -91,12 +91,22 @@ export function Hero() {
 
         {settings.showStats && stats.length > 0 && (
           <Reveal delay={0.4}>
-            <dl className="mt-20 grid max-w-2xl grid-cols-3 gap-6 border-t border-line pt-8">
-              {stats.map((s) => (
-                <div key={s.id}>
+            {/* Zephyr turns the stats into a numbered rail of small glass tiles */}
+            <dl className="mt-20 grid max-w-2xl grid-cols-3 gap-6 border-t border-line pt-8 zephyr:mb-8 zephyr:max-w-xl zephyr:gap-3 zephyr:border-t-0 zephyr:pt-0">
+              {stats.map((s, i) => (
+                <div
+                  key={s.id}
+                  className="zephyr:relative zephyr:rounded-xl zephyr:border zephyr:border-(--s-edge) zephyr:bg-(--s-fill) zephyr:p-4 zephyr:shadow-(--s-raised) zephyr:backdrop-blur-md"
+                >
                   <dt className="sr-only">{s.label}</dt>
-                  <dd className="font-serif text-4xl sm:text-5xl">{s.value}</dd>
-                  <dd className="mt-1 text-xs tracking-wide text-muted sm:text-sm">{s.label}</dd>
+                  <dd className="font-serif text-4xl sm:text-5xl zephyr:text-3xl sm:zephyr:text-4xl">{s.value}</dd>
+                  <dd className="mt-1 text-xs tracking-wide text-muted sm:text-sm zephyr:text-xs">{s.label}</dd>
+                  <dd
+                    aria-hidden
+                    className="absolute top-full left-0 mt-2.5 hidden w-full border-t border-line pt-1.5 font-mono text-[0.7rem] text-muted zephyr:block"
+                  >
+                    {String(i + 1).padStart(2, "0")}
+                  </dd>
                 </div>
               ))}
             </dl>
