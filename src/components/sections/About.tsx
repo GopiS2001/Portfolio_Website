@@ -66,6 +66,7 @@ export function About() {
                       </div>
                     </NeuCard>
                   </Reveal>
+                  </li>
                 );
               })}
             </ul>
