@@ -352,12 +352,97 @@ body {
 .animate-marquee {
   animation: marquee 40s linear infinite;
 }
+.animate-marquee:hover {
+  animation-play-state: paused;
+}
+
+/* Cursor spotlight on cards (TiltCard sets --mx / --my); sits under the content */
+.spotlight {
+  position: relative;
+  isolation: isolate;
+}
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  border-radius: inherit;
+  pointer-events: none;
+  opacity: 0;
+  background: radial-gradient(
+    28rem circle at var(--mx, 50%) var(--my, 50%),
+    color-mix(in srgb, var(--accent) 16%, transparent),
+    transparent 45%
+  );
+  transition: opacity 0.4s ease;
+}
+.spotlight:hover::before {
+  opacity: 1;
+}
+
+/* Slow-drifting light behind the hero */
+.aurora {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(80px);
+  pointer-events: none;
+  will-change: transform;
+}
+.aurora-a {
+  animation: drift-a 22s ease-in-out infinite alternate;
+}
+.aurora-b {
+  animation: drift-b 28s ease-in-out infinite alternate;
+}
+@keyframes drift-a {
+  to {
+    transform: translate3d(12vw, 8vh, 0) scale(1.15);
+  }
+}
+@keyframes drift-b {
+  to {
+    transform: translate3d(-10vw, -6vh, 0) scale(0.9);
+  }
+}
+
+/* Gradient sheen that sweeps across a solid button on hover */
+.sheen {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
+}
+.sheen::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(110deg, transparent 30%, rgb(255 255 255 / 0.28) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+}
+.sheen:hover::after {
+  transform: translateX(120%);
+}
+
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 3px;
+}
+
+h1,
+h2 {
+  text-wrap: balance;
+}
 
 .no-animations .text-gradient,
 .no-animations .animate-marquee,
 .no-animations .animate-bounce,
-.no-animations .animate-ping {
+.no-animations .animate-ping,
+.no-animations .aurora {
   animation: none;
+}
+.no-animations .sheen::after {
+  display: none;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -365,7 +450,8 @@ body {
     scroll-behavior: auto;
   }
   .text-gradient,
-  .animate-marquee {
+  .animate-marquee,
+  .aurora {
     animation: none;
   }
 }
