@@ -2,7 +2,7 @@
 
 export type ThemeMode = "light" | "dark" | "system";
 
-export const DESIGN_STYLES = ["neumorphism", "glassmorphism", "claymorphism", "skeuomorphism"] as const;
+export const DESIGN_STYLES = ["neumorphism", "glassmorphism", "claymorphism", "skeuomorphism", "zephyr"] as const;
 export type DesignStyle = (typeof DESIGN_STYLES)[number];
 export type SectionKey = "home" | "about" | "skills" | "experience" | "projects" | "contact";
 
