@@ -54,8 +54,9 @@ export function About() {
               {about.highlights.map((h, i) => {
                 const Icon = traitIcon(h.title);
                 return (
-                  <Reveal key={h.id} delay={0.1 + i * 0.06} className="h-full">
-                    <NeuCard as="li" className="flex h-full items-start gap-4 p-5">
+                  <li key={h.id}>
+                  <Reveal delay={0.1 + i * 0.06} className="h-full">
+                    <NeuCard className="flex h-full items-start gap-4 p-5">
                       <span className="neu-in-sm grid size-12 shrink-0 place-items-center rounded-full text-accent-ink">
                         <Icon aria-hidden className="size-5" />
                       </span>
