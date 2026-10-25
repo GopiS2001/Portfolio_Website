@@ -66,9 +66,9 @@ export function Navbar() {
         <div className="flex items-center gap-3">
           {settings.enableThemeToggle && <ThemeToggle />}
           {settings.showHeaderCta && contactVisible && (
-            <NeuButton href="#contact" className="hidden sm:inline-flex">
-              {settings.headerCtaLabel}
-            </NeuButton>
+            <span className="hidden sm:block">
+              <NeuButton href="#contact">{settings.headerCtaLabel}</NeuButton>
+            </span>
           )}
           {navLinks.length > 0 && (
             <NeuIconButton
